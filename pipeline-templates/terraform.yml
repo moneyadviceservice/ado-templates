@@ -1,0 +1,148 @@
+parameters:
+  - name: initCommandOptions
+    default: ''
+
+  - name: planCommandOptions
+    default: ''
+
+  - name: applyCommandOptions
+    default: ''
+
+  - name: destroyCommandOptions
+    default: ''
+
+  - name: environment
+    default: dev
+
+  - name: location
+    default: 'UK South'
+    values:
+      - 'UK South'
+      - 'UK West'
+
+  - name: overrideAction
+    default: plan
+    values:
+      - plan
+      - apply
+      - destroy
+
+  - name: product
+    default: ''
+
+  - name: component
+    default: ''
+
+  - name: serviceConnection
+    default: ''
+
+  - name: terraformInitSubscription
+    default: ''
+
+  - name: terraformEnvironmentVariables
+    type: object
+    default: null
+
+  - name: baseDirectory
+    default: ''
+
+  - name: storage_account_name
+    default: 'mapstfstatedev'
+
+steps:
+  - checkout: self
+    clean: true
+  - bash: echo ${{ parameters.environment }}
+    displayName: 'Environment parameter: ${{ parameters.environment }}'
+
+  - template: ./install-tfswitch.yml
+    parameters:
+      tfswitchArgs: -b ~/.local/bin/terraform --latest
+      workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+
+  - task: TerraformCLI@1
+    displayName: Terraform init ${{ parameters.component }}
+    inputs:
+      command: init
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+      backendType: azurerm
+      ensureBackend: false
+      backendServiceArm: ${{ parameters.serviceConnection }}
+      backendAzureRmResourceGroupName: 'maps-state-${{ parameters.environment }}'
+      backendAzureRmResourceGroupLocation: ${{ parameters.location }}
+      backendAzureRmStorageAccountName: ${{ parameters.storage_account_name }}
+      backendAzureRmStorageAccountSku: Standard_LRS
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: '${{ parameters.product }}/${{ parameters.environment }}/${{ parameters.component }}/terraform.tfstate'
+      commandOptions: '-backend-config=subscription_id=${{ parameters.terraformInitSubscription }} ${{ parameters.initCommandOptions }}'
+
+  - task: TerraformCLI@1
+    displayName: Terraform validate
+    inputs:
+      command: validate
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+
+  - task: TerraformCLI@1
+    displayName: Terraform plan ${{ parameters.component }}
+    condition: and(succeeded(), in('${{ parameters.overrideAction }}', 'plan', 'apply'))
+    ${{ if parameters.terraformEnvironmentVariables }}:
+      env: ${{ parameters.terraformEnvironmentVariables  }}
+    inputs:
+      command: plan
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+      environmentServiceName: ${{ parameters.serviceConnection }}
+      runAzLogin: true
+      publishPlanResults: "${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
+      commandOptions: >
+        -out tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}
+        -var env=${{ parameters.environment }}
+        -var product=${{ parameters.product }} ${{ parameters.planCommandOptions }}
+        -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
+        -lock=false
+  
+  - task: TerraformCLI@1
+    displayName: Terraform apply ${{ parameters.component }}
+    ${{ if parameters.terraformEnvironmentVariables }}:
+      env: ${{ parameters.terraformEnvironmentVariables  }}
+    condition: |
+      or(
+      and(succeeded(), eq('${{ parameters.overrideAction }}', 'apply')),
+      and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+      )
+    inputs:
+      runAzLogin: true
+      command: apply
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+      environmentServiceName: ${{ parameters.serviceConnection }}
+      commandOptions: "${{ parameters.applyCommandOptions }} -auto-approve tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
+
+  - ${{ if eq(parameters.overrideAction, 'destroy') }}:
+      - task: TerraformCLI@1
+        displayName: Terraform destroy ${{ parameters.component }}
+        ${{ if parameters.terraformEnvironmentVariables }}:
+          env: ${{ parameters.terraformEnvironmentVariables  }}
+        condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.overrideAction }}', 'destroy'))
+        inputs:
+          command: destroy
+          ${{ if eq( parameters['baseDirectory'], '') }}:
+            workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+          ${{ else }}:
+            workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+          environmentServiceName: ${{ parameters.serviceConnection }}
+          ${{ if eq(parameters['tfVarsFile'], '') }}:
+            commandOptions: >
+              -var env=${{ parameters.environment }}
+              -var product=${{ parameters.product }} ${{ parameters.destroyCommandOptions }}
+              -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"

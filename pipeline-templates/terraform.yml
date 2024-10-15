@@ -84,6 +84,7 @@ steps:
     inputs:
       command: validate
       workingDirectory: $(workingDirectory) 
+
   - task: TerraformCLI@1
     displayName: Terraform plan ${{ parameters.component }}
     condition: and(succeeded(), in('${{ parameters.overrideAction }}', 'plan', 'apply'))

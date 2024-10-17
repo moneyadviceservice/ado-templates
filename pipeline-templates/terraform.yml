@@ -40,7 +40,6 @@ parameters:
     default: ''
 
   - name: terraformEnvironmentVariables
-    type: object
     default: null
 
   - name: baseDirectory

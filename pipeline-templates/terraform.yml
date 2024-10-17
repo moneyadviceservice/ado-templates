@@ -50,11 +50,12 @@ parameters:
     default: 'mapstfstatedev'
 
 variables:
-  workingDirectory: $(workingDirectory)   
+  workingDirectory: $(workingDirectory)
 
 steps:
   - checkout: self
     clean: true
+
   - bash: echo ${{ parameters.environment }}
     displayName: 'Environment parameter: ${{ parameters.environment }}'
 
@@ -83,18 +84,14 @@ steps:
     displayName: Terraform validate
     inputs:
       command: validate
-      workingDirectory: $(workingDirectory) 
+      workingDirectory: $(workingDirectory)
 
   - task: TerraformCLI@1
     displayName: Terraform plan ${{ parameters.component }}
     condition: and(succeeded(), in('${{ parameters.overrideAction }}', 'plan', 'apply'))
-    ${{ if parameters.terraformEnvironmentVariables }}:
-      env:
-        ${{ each terraformEnv in parameters.terraformEnvironmentVariables }}:  
-        ${{ terraformEnv.key }}: ${{ terraformEnv.value }}  
     inputs:
       command: plan
-      workingDirectory: $(workingDirectory) 
+      workingDirectory: $(workingDirectory)
       environmentServiceName: ${{ parameters.serviceConnection }}
       runAzLogin: true
       publishPlanResults: "${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
@@ -104,15 +101,16 @@ steps:
         -var product=${{ parameters.product }} ${{ parameters.planCommandOptions }}
         -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
         -lock=false
-  
+    env:
+      ${{ each terraformEnv in parameters.terraformEnvironmentVariables }}:
+        ${{ terraformEnv.key }}: ${{ terraformEnv.value }}
+
   - task: TerraformCLI@1
     displayName: Terraform apply ${{ parameters.component }}
-    ${{ if parameters.terraformEnvironmentVariables }}:
-      env: ${{ parameters.terraformEnvironmentVariables  }}
     condition: |
       or(
-      and(succeeded(), eq('${{ parameters.overrideAction }}', 'apply')),
-      and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
+        and(succeeded(), eq('${{ parameters.overrideAction }}', 'apply')),
+        and(succeeded(), eq(variables['isMain'], true), eq(variables['isAutoTriggered'], true))
       )
     inputs:
       runAzLogin: true
@@ -120,13 +118,11 @@ steps:
       workingDirectory: $(workingDirectory)
       environmentServiceName: ${{ parameters.serviceConnection }}
       commandOptions: "${{ parameters.applyCommandOptions }} -auto-approve tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
-    failOnStderr: true
+    env: ${{ parameters.terraformEnvironmentVariables }}
 
   - ${{ if eq(parameters.overrideAction, 'destroy') }}:
       - task: TerraformCLI@1
         displayName: Terraform destroy ${{ parameters.component }}
-        ${{ if parameters.terraformEnvironmentVariables }}:
-          env: ${{ parameters.terraformEnvironmentVariables  }}
         condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.overrideAction }}', 'destroy'))
         inputs:
           command: destroy
@@ -135,7 +131,5 @@ steps:
           commandOptions: >
             -var env=${{ parameters.environment }}
             -var product=${{ parameters.product }} ${{ parameters.destroyCommandOptions }}
-            ${{ if parameters.tfVarsFile != '' }}:  
-              -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.tfVarsFile }}"  
-            ${{ else }}:  
-                -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
+            -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
+        env: ${{ parameters.terraformEnvironmentVariables }}

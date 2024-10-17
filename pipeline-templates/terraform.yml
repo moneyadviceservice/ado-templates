@@ -1,6 +1,3 @@
-variables:
-  workingDirectory: $(workingDirectory)
-
 parameters:
   - name: initCommandOptions
     default: ''
@@ -68,7 +65,10 @@ steps:
     displayName: Terraform init ${{ parameters.component }}
     inputs:
       command: init
-      workingDirectory: $(workingDirectory)
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
       backendType: azurerm
       ensureBackend: false
       backendServiceArm: ${{ parameters.serviceConnection }}
@@ -80,18 +80,26 @@ steps:
       backendAzureRmKey: '${{ parameters.product }}/${{ parameters.environment }}/${{ parameters.product }}-${{ parameters.component }}/terraform.tfstate'
       commandOptions: '-backend-config=subscription_id=${{ parameters.terraformInitSubscription }} ${{ parameters.initCommandOptions }}'
 
+
+
   - task: TerraformCLI@1
     displayName: Terraform validate
     inputs:
       command: validate
-      workingDirectory: $(workingDirectory)
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
 
   - task: TerraformCLI@1
     displayName: Terraform plan ${{ parameters.component }}
     condition: and(succeeded(), in('${{ parameters.overrideAction }}', 'plan', 'apply'))
     inputs:
       command: plan
-      workingDirectory: $(workingDirectory)
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+       workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
       environmentServiceName: ${{ parameters.serviceConnection }}
       runAzLogin: true
       publishPlanResults: "${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
@@ -115,7 +123,10 @@ steps:
     inputs:
       runAzLogin: true
       command: apply
-      workingDirectory: $(workingDirectory)
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
       environmentServiceName: ${{ parameters.serviceConnection }}
       commandOptions: "${{ parameters.applyCommandOptions }} -auto-approve tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
     env: ${{ parameters.terraformEnvironmentVariables }}
@@ -126,7 +137,10 @@ steps:
         condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.overrideAction }}', 'destroy'))
         inputs:
           command: destroy
-          workingDirectory: $(workingDirectory)
+          ${{ if eq( parameters['baseDirectory'], '') }}:
+            workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+          ${{ else }}:
+            workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
           environmentServiceName: ${{ parameters.serviceConnection }}
           commandOptions: >
             -var env=${{ parameters.environment }}

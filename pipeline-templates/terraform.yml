@@ -140,8 +140,10 @@ steps:
           ${{ else }}:
             workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
           environmentServiceName: ${{ parameters.serviceConnection }}
-          ${{ if eq(parameters['tfVarsFile'], '') }}:
-            commandOptions: >
-              -var env=${{ parameters.environment }}
-              -var product=${{ parameters.product }} ${{ parameters.destroyCommandOptions }}
+          commandOptions: >
+            -var env=${{ parameters.environment }}
+            -var product=${{ parameters.product }} ${{ parameters.destroyCommandOptions }}
+            ${{ if parameters.tfVarsFile != '' }}:
+              -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.tfVarsFile }}"
+            ${{ else }}:
               -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"

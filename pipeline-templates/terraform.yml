@@ -110,9 +110,9 @@ steps:
         -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
         -lock=false
     env:
-      ${{ each terraformEnv in parameters.terraformEnvironmentVariables }}:
-        ${{ terraformEnv.key }}: ${{ terraformEnv.value }}
-
+      ${{ if parameters.terraformEnvironmentVariables }}:
+        ${{ each terraformEnv in parameters.terraformEnvironmentVariables }}:
+          ${{ terraformEnv.key }}: ${{ terraformEnv.value }}
   - task: TerraformCLI@1
     displayName: Terraform apply ${{ parameters.component }}
     condition: |
@@ -129,7 +129,9 @@ steps:
         workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
       environmentServiceName: ${{ parameters.serviceConnection }}
       commandOptions: "${{ parameters.applyCommandOptions }} -auto-approve tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
-    env: ${{ parameters.terraformEnvironmentVariables }}
+    env:
+      ${{ if parameters.terraformEnvironmentVariables }}:
+        ${{ parameters.terraformEnvironmentVariables }}
 
   - ${{ if eq(parameters.overrideAction, 'destroy') }}:
       - task: TerraformCLI@1
@@ -145,5 +147,10 @@ steps:
           commandOptions: >
             -var env=${{ parameters.environment }}
             -var product=${{ parameters.product }} ${{ parameters.destroyCommandOptions }}
-            -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
-        env: ${{ parameters.terraformEnvironmentVariables }}
+            ${{ if parameters.tfVarsFile && parameters.tfVarsFile != '' }}:
+              -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.tfVarsFile }}"
+            ${{ else }}:
+              -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
+        env:
+          ${{ if parameters.terraformEnvironmentVariables }}:
+            ${{ parameters.terraformEnvironmentVariables }}

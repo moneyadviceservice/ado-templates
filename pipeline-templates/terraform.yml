@@ -1,3 +1,6 @@
+variables:
+  workingDirectory: $(workingDirectory)
+
 parameters:
   - name: initCommandOptions
     default: ''
@@ -48,9 +51,6 @@ parameters:
 
   - name: storage_account_name
     default: 'mapstfstatedev'
-
-variables:
-  workingDirectory: $(workingDirectory)
 
 steps:
   - checkout: self

@@ -90,10 +90,10 @@ steps:
   - task: TerraformCLI@1
     displayName: Terraform plan ${{ parameters.component }}
     condition: and(succeeded(), in('${{ parameters.overrideAction }}', 'plan', 'apply'))
-    ${{ if and(parameters.terraformEnvironmentVariables, parameters.terraformEnvironmentVariables != '') }}:
+    ${{ if parameters.terraformEnvironmentVariables }}:
       env: 
-        ${{ each key, value in parameters.terraformEnvironmentVariables }}:
-          ${{ key }}: ${{ value }}
+        ${{ each key in parameters.terraformEnvironmentVariables }}:
+          ${{ key }}: ${{ parameters.terraformEnvironmentVariables[key] }}
     inputs:
       command: plan
       ${{ if eq( parameters['baseDirectory'], '') }}:
@@ -112,10 +112,10 @@ steps:
   
   - task: TerraformCLI@1
     displayName: Terraform apply ${{ parameters.component }}
-    ${{ if and(parameters.terraformEnvironmentVariables, parameters.terraformEnvironmentVariables != '') }}:
+    ${{ if parameters.terraformEnvironmentVariables }}:
       env: 
-        ${{ each key, value in parameters.terraformEnvironmentVariables }}:
-          ${{ key }}: ${{ value }}
+        ${{ each key in parameters.terraformEnvironmentVariables }}:
+          ${{ key }}: ${{ parameters.terraformEnvironmentVariables[key] }}
     condition: |
       or(
       and(succeeded(), eq('${{ parameters.overrideAction }}', 'apply')),
@@ -134,10 +134,10 @@ steps:
   - ${{ if eq(parameters.overrideAction, 'destroy') }}:
       - task: TerraformCLI@1
         displayName: Terraform destroy ${{ parameters.component }}
-    ${{ if and(parameters.terraformEnvironmentVariables, parameters.terraformEnvironmentVariables != '') }}:
+    ${{ if parameters.terraformEnvironmentVariables }}:
       env: 
-        ${{ each key, value in parameters.terraformEnvironmentVariables }}:
-          ${{ key }}: ${{ value }}
+        ${{ each key in parameters.terraformEnvironmentVariables }}:
+          ${{ key }}: ${{ parameters.terraformEnvironmentVariables[key] }}
         condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.overrideAction }}', 'destroy'))
         inputs:
           command: destroy

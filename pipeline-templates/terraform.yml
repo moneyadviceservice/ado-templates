@@ -47,7 +47,7 @@ parameters:
     default: ''
 
   - name: storage_account_name
-    default: ''
+    default: 'mapstfstatedev'
 steps:
   - checkout: self
     clean: true

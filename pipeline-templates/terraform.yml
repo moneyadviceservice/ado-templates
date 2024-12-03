@@ -47,7 +47,7 @@ parameters:
     default: ''
 
   - name: storage_account_name
-    default: 'mapstfstatedev'
+    default: ''
 steps:
   - checkout: self
     clean: true
@@ -57,7 +57,10 @@ steps:
   - template: ./install-tfswitch.yml
     parameters:
       tfswitchArgs: -b ~/.local/bin/terraform --latest
-      workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
 
   - task: TerraformCLI@1
     displayName: Terraform init ${{ parameters.component }}

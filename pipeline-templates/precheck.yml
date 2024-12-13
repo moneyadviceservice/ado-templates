@@ -2,12 +2,6 @@ steps:
   - checkout: self
     clean: true
 
-  - script: |
-      echo "Repository Path: $(Build.Repository.LocalPath)"
-      ls -la $(Build.Repository.LocalPath)
-      # ls -la $(Build.Repository.LocalPath)/scripts
-    displayName: "Debug Repository Path"
-
   - task: Bash@3
     displayName: Terraform Formatting Check
     inputs:

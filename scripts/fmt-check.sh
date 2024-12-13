@@ -3,6 +3,8 @@
 ROOT_PATH=$(dirname "$(dirname "$(realpath "$0")")")
 TF_FILES=$(find "$ROOT_PATH" -type f -name "*.tf")
 
+echo "Running terraform fmt check..."
+
 if [[ -z "$TF_FILES" ]]; then
     echo "No Terraform files found in this folder."
     exit 0

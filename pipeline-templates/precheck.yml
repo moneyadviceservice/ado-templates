@@ -2,4 +2,4 @@ steps:
   - task: Bash@3
     displayName: Terraform Formatting Check
     inputs:
-      script: $(System.DefaultWorkingDirectory)/scripts/fmt-check.sh
+      script: $(Build.Repository.LocalPath)/scripts/fmt-check.sh

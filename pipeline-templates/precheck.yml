@@ -36,3 +36,14 @@ steps:
         done
 
         echo "All checks passed!"
+
+  - script: |
+      echo "Installing pre-commit..."
+      pip install pre-commit
+    displayName: 'Install pre-commit'
+
+
+  - script: |
+      echo "Running pre-commit hooks on all files..."
+      pre-commit run --all-files
+    displayName: "Run Pre-Commit Hooks"

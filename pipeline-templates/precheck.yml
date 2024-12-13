@@ -4,7 +4,7 @@ steps:
 
   - script: |
       echo "Repository Path: $(Build.Repository.LocalPath)"
-      ls -la $(Build.Repository.LocalPath)/scripts
+      ls -la $(Build.Repository.LocalPath)
     displayName: "Debug Repository Path"
 
   - task: Bash@3

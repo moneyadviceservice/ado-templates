@@ -2,4 +2,4 @@ steps:
   - task: Bash@3
     displayName: Terraform Formatting Check
     inputs:
-      script: ./scripts/fmt-check.sh
+      script: ../scripts/fmt-check.sh

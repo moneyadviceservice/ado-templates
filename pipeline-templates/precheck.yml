@@ -1,5 +1,5 @@
 steps:
-  - checkout: ado-templates
+  - checkout: self
     clean: true
 
   - script: |

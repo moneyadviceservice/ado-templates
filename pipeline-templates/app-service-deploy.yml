@@ -1,0 +1,22 @@
+jobs:
+  - job: Deploy
+    displayName: 'Deploy to $(appServiceName)'
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download Build Artifact'
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)/drop'
+        
+      - task: AzureWebApp@1
+        displayName: 'Azure App Service Deploy: $(appServiceName)'
+        inputs:
+          azureSubscription: '$(subscription)'
+          appType: 'webAppLinux'
+          appName: '$(appServiceName)'
+          resourceGroupName: '$(resourceGroupName)'
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
+          runtimeStack: 'DOTNETCORE|8.0'

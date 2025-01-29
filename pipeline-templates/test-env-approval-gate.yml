@@ -1,0 +1,12 @@
+jobs:
+  - job: ManualApproval
+    displayName: 'Approval Pending'
+    steps:
+      - task: ManualValidation@0
+        inputs:
+          notifyUsers: 'MHPD-Testers'
+          instructions: 'Please approve the deployment to proceed.'
+          onTimeout: 'reject'
+          timeout: '1d'
+          continueOnError: false
+        name: WaitForApproval

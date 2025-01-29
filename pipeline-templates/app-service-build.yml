@@ -1,0 +1,61 @@
+jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+      - task: UseDotNet@2
+        displayName: 'Install .NET Core 8.x'
+        inputs:
+          version: 8.x
+        
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore projects'
+        inputs:
+          command: 'restore'
+          feedsToUse: 'select'
+          vstsFeed: 'MaPS Digital/MHPD-Shared'
+          projects: '${{ parameters.projectPath }}/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Build Project'
+        inputs:
+          command: 'build'
+          projects: |
+            '$(projectsToRestoreAndBuild)'
+          arguments: '--configuration $(buildConfiguration)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Run Unit Tests - $(buildConfiguration)'
+        inputs:
+          command: 'test'
+          projects: '${{ parameters.projectPath }}/tests/**/*.csproj'
+          arguments: '--configuration $(buildConfiguration) --logger trx --collect "Code coverage" --results-directory "$(Build.SourcesDirectory)/TestResults/Coverage/"'
+          publishTestResults: false
+
+      - task: PublishTestResults@2
+        displayName: 'Publish Test Results'
+        inputs:
+          testResultsFormat: VSTest
+          testResultsFiles: '**/*.trx'
+          searchFolder: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+
+      - task: PublishCodeCoverageResults@2
+        displayName: 'Publish Code Coverage Results'
+        inputs:
+          summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish'
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          projects: '${{ parameters.projectPath }}/app/**/${{ parameters.packagePath }}.csproj'
+          arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish build artifacts'
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'

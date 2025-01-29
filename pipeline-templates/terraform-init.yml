@@ -1,0 +1,73 @@
+parameters:
+  - name: initCommandOptions
+    default: ''
+
+  - name: environment
+    default: dev
+
+  - name: location
+    default: 'UK South'
+    values:
+      - 'UK South'
+      - 'UK West'
+
+  - name: overrideAction
+    default: plan
+    values:
+      - plan
+      - apply
+      - destroy
+
+  - name: product
+    default: ''
+
+  - name: component
+    default: ''
+
+  - name: serviceConnection
+    default: ''
+
+  - name: terraformInitSubscription
+    default: ''
+
+  - name: terraformEnvironmentVariables
+    type: object
+    default: null
+
+  - name: baseDirectory
+    default: ''
+
+  - name: storage_account_name
+    default: 'mapstfstatedev'
+steps:
+  - checkout: self
+    clean: true
+  - bash: echo ${{ parameters.environment }}
+    displayName: 'Environment parameter: ${{ parameters.environment }}'
+
+  - template: ./install-tfswitch.yml
+    parameters:
+      tfswitchArgs: -b ~/.local/bin/terraform --latest
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+
+  - task: TerraformCLI@1
+    displayName: Terraform init ${{ parameters.component }}
+    inputs:
+      command: init
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+      backendType: azurerm
+      ensureBackend: false
+      backendServiceArm: ${{ parameters.serviceConnection }}
+      backendAzureRmResourceGroupName: 'maps-state-${{ parameters.environment }}'
+      backendAzureRmResourceGroupLocation: ${{ parameters.location }}
+      backendAzureRmStorageAccountName: ${{ parameters.storage_account_name }}
+      backendAzureRmStorageAccountSku: Standard_LRS
+      backendAzureRmContainerName: tfstate
+      backendAzureRmKey: '${{ parameters.product }}/${{ parameters.environment }}/${{ parameters.product }}-${{ parameters.component }}/terraform.tfstate'
+      commandOptions: '-backend-config=subscription_id=${{ parameters.terraformInitSubscription }} ${{ parameters.initCommandOptions }}'

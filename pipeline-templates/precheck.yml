@@ -2,6 +2,14 @@ steps:
   - checkout: self
     clean: true
 
+  - template: ./install-tfswitch.yml
+    parameters:
+      tfswitchArgs: -b ~/.local/bin/terraform --latest
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
+
   - task: Bash@3
     displayName: Terraform Formatting Check
     inputs:

@@ -63,12 +63,11 @@ steps:
         workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
 
   - template: ./precheck.yml
-    # parameters:
-    #   ${{ if eq( parameters['baseDirectory'], '') }}:
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
-    #   ${{ else }}:
-    #     workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
-
+    parameters:
+      ${{ if eq( parameters['baseDirectory'], '') }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
+      ${{ else }}:
+        workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
 
   - task: TerraformCLI@1
     displayName: Terraform init ${{ parameters.component }}

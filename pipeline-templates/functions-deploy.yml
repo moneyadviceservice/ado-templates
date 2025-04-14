@@ -1,0 +1,21 @@
+jobs:
+  - job: Deploy
+    displayName: 'Deploy to $(functionAppName)'
+    pool:
+      vmImage: $(vmImageName)
+
+    steps:
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download Build Artifact'
+        inputs:
+          buildType: 'current'
+          artifactName: 'drop'
+          targetPath: '$(Pipeline.Workspace)/drop'
+        
+      - task: AzureFunctionApp@1
+        displayName: 'Azure Function App Deploy: $(functionAppName)'
+        inputs:
+          azureSubscription: $(subscription)
+          appType: functionApp
+          appName: $(functionAppName)
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'

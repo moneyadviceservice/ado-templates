@@ -29,7 +29,7 @@ jobs:
         displayName: 'Run Unit Tests - $(buildConfiguration)'
         inputs:
           command: 'test'
-          projects: '${{ parameters.projectPath }}/tests/**/*.csproj'
+          projects: 'tests/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --logger trx --collect "Code coverage" --results-directory "$(Build.SourcesDirectory)/TestResults/Coverage/"'
           publishTestResults: false
 
@@ -50,7 +50,7 @@ jobs:
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: '${{ parameters.projectPath }}/app/**/${{ parameters.packagePath }}.csproj'
+          projects: 'app/**/${{ parameters.packagePath }}.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1

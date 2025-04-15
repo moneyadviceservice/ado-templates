@@ -15,7 +15,7 @@ jobs:
           command: 'restore'
           feedsToUse: 'select'
           vstsFeed: 'MaPS Digital/MHPD-Shared'
-          projects: '${{ parameters.projectPath }}/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
+          projects: 'app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
 
       - task: DotNetCoreCLI@2
         displayName: 'Build Project'

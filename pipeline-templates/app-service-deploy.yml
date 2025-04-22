@@ -28,7 +28,7 @@ jobs:
           appName: '$(appServiceName)'
           deployToSlotOrASE: true
           resourceGroupName: '$(resourceGroupName)'
-          slotName: staging
+          slotName: 'CDA-service-staging-slot'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
 
       - task: AzureAppServiceManage@0

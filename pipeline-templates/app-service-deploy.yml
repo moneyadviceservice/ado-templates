@@ -20,3 +20,22 @@ jobs:
           resourceGroupName: '$(resourceGroupName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
           runtimeStack: 'DOTNETCORE|8.0'
+
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: '$(subscription)'
+          appType: webAppLinux
+          appName: '$(appServiceName)'
+          deployToSlotOrASE: true
+          resourceGroupName: '$(resourceGroupName)'
+          slotName: staging
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
+
+      - task: AzureAppServiceManage@0
+        inputs:
+          azureSubscription: '$(subscription)'
+          appType: webAppLinux
+          WebAppName: '$(appServiceName)'
+          ResourceGroupName: '$(resourceGroupName)'
+          SourceSlot: staging
+          SwapWithProduction: true

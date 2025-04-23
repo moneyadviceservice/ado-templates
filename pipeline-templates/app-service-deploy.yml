@@ -19,7 +19,7 @@ jobs:
           TIMESTAMP=$(date +%H%M%S)
           PRIORITY=6$(date +%M%S)
 
-          az network nsg rule create --resource-group maps-hub-prod-${{ parameters.env }} --nsg-name mhpd-app-nsg-${{ parameters.env }} --name allow-agent-ip-$TIMESTAMP --priority $PRIORITY --access Allow --direction Inbound --protocol * --source-address-prefixes $AGENT_IP --source-port-ranges "*" --destination-address-prefixes "*" --destination-port-ranges "*"
+          az network nsg rule create --resource-group maps-hub-prod-${{ parameters.env }} --nsg-name mhpd-app-nsg-${{ parameters.env }} --name allow-agent-ip-$TIMESTAMP --priority $PRIORITY --access Allow --direction Inbound --protocol "*" --source-address-prefixes $AGENT_IP --source-port-ranges "*" --destination-address-prefixes "*" --destination-port-ranges "*"
         displayName: 'Whitelist Agent IP'
           
       - task: AzureWebApp@1

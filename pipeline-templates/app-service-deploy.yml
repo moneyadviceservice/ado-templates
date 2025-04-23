@@ -37,5 +37,5 @@ jobs:
           appType: webAppLinux
           WebAppName: '$(appServiceName)'
           ResourceGroupName: '$(resourceGroupName)'
-          SourceSlot: 'CDA-service-staging-slot'
+          SourceSlot: '$(slotName)'
           SwapWithProduction: true

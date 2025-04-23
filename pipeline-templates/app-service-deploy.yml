@@ -24,11 +24,11 @@ jobs:
       - task: AzureWebApp@1
         inputs:
           azureSubscription: '$(subscription)'
-          appType: webAppLinux
+          appType: webAppLinux #webApp for Windows
           appName: '$(appServiceName)'
           deployToSlotOrASE: true
           resourceGroupName: '$(resourceGroupName)'
-          slotName: 'CDA-service-staging-slot'
+          slotName: '$(slotName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
 
       - task: AzureAppServiceManage@0

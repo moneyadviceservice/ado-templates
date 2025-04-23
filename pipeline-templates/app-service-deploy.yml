@@ -11,14 +11,17 @@ jobs:
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)/drop'
 
-      - script:
+      - script: |
           AGENT_IP=$(curl -s https://api.ipify.org)
+
+          TIMESTAMP=$(date +%H%M%S)
+          PRIORITY=6$(date +%M%S)
 
           az network nsg rule create \
             --resource-group $resourceGroupName \
             --nsg-name mhpd-app-nsg-${{ parameters.env }} \
-            --name allow-agent-ip-(date +%H%M%S) \
-            --priority 64(date +%M%S) \
+            --name allow-agent-ip-$TIMESTAMP \
+            --priority $PRIORITY \
             --access Allow \
             --direction Inbound \
             --protocol Any \

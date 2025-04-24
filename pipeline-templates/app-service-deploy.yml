@@ -21,7 +21,22 @@ jobs:
 
           az network nsg rule create --resource-group maps-hub-prod-${{ parameters.env }} --nsg-name mhpd-app-nsg-${{ parameters.env }} --name allow-agent-ip-$TIMESTAMP --priority $PRIORITY --access Allow --direction Inbound --protocol "*" --source-address-prefixes $AGENT_IP --source-port-ranges "*" --destination-address-prefixes "*" --destination-port-ranges "*"
         displayName: 'Whitelist Agent IP'
-          
+
+      - task: AzureCLI@2
+        displayName: Whitelist Agent IP
+        inputs:
+          azureSubscription: '$(subscription)'
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            AGENT_IP=$(curl -s https://api.ipify.org)
+
+            echo "$AGENT_IP"
+
+            TIMESTAMP=$(date +%H%M%S)
+            PRIORITY=6$(date +%M%S)
+            az network nsg rule create --resource-group maps-hub-prod-${{ parameters.env }} --nsg-name mhpd-app-nsg-${{ parameters.env }} --name allow-agent-ip-$TIMESTAMP --priority $PRIORITY --access Allow --direction Inbound --protocol "*" --source-address-prefixes $AGENT_IP --source-port-ranges "*" --destination-address-prefixes "*" --destination-port-ranges "*"
+
       - task: AzureWebApp@1
         displayName: 'Azure App Service Deploy: $(appServiceName)'
         inputs:

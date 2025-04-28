@@ -11,35 +11,35 @@ jobs:
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)/drop'
 
-      - task: AzureCLI@2
-        displayName: Whitelist Agent IP
-        inputs:
-          azureSubscription: '$(subscription)'
-          scriptType: bash
-          scriptLocation: inlineScript
-          inlineScript: |
-            AGENT_IP=$(curl -s https://api.ipify.org)
+      # - task: AzureCLI@2
+      #   displayName: Whitelist Agent IP
+      #   inputs:
+      #     azureSubscription: '$(subscription)'
+      #     scriptType: bash
+      #     scriptLocation: inlineScript
+      #     inlineScript: |
+      #       AGENT_IP=$(curl -s https://api.ipify.org)
 
-            echo "$AGENT_IP"
+      #       echo "$AGENT_IP"
 
-            TIMESTAMP=$(date +%H%M%S)
-            PRIORITY=30$(date +%S)
-            az network nsg rule create --resource-group maps-hub-${{ parameters.env }} --nsg-name mhpd-app-nsg-${{ parameters.env }} --name allow-agent-ip-$TIMESTAMP --priority $PRIORITY --access Allow --direction Inbound --protocol "*" --source-address-prefixes $AGENT_IP --source-port-ranges "*" --destination-address-prefixes "*" --destination-port-ranges "*"
+      #       TIMESTAMP=$(date +%H%M%S)
+      #       PRIORITY=30$(date +%S)
+      #       az network nsg rule create --resource-group maps-hub-${{ parameters.env }} --nsg-name mhpd-app-nsg-${{ parameters.env }} --name allow-agent-ip-$TIMESTAMP --priority $PRIORITY --access Allow --direction Inbound --protocol "*" --source-address-prefixes $AGENT_IP --source-port-ranges "*" --destination-address-prefixes "*" --destination-port-ranges "*"
 
-      - task: AzureCLI@2
-        displayName: Add Agent IP to App Service
-        inputs:
-          azureSubscription: '$(subscription)'
-          scriptType: bash
-          scriptLocation: inlineScript
-          inlineScript: |
-            AGENT_IP=$(curl -s https://api.ipify.org)
+      # - task: AzureCLI@2
+      #   displayName: Add Agent IP to App Service
+      #   inputs:
+      #     azureSubscription: '$(subscription)'
+      #     scriptType: bash
+      #     scriptLocation: inlineScript
+      #     inlineScript: |
+      #       AGENT_IP=$(curl -s https://api.ipify.org)
 
-            echo "$AGENT_IP"
+      #       echo "$AGENT_IP"
 
-            TIMESTAMP=$(date +%H%M%S)
-            PRIORITY=30$(date +%S)
-            az webapp config access-restriction add --resource-group $(resourceGroupName) --name CDA-service-${{ parameters.env }} --rule-name allow-agent-ip-$TIMESTAMP --action Allow --ip-address $AGENT_IP --priority 100 --description "Allow pipeline agent IP $AGENT_IP" --scm-site true
+      #       TIMESTAMP=$(date +%H%M%S)
+      #       PRIORITY=30$(date +%S)
+      #       az webapp config access-restriction add --resource-group $(resourceGroupName) --name CDA-service-${{ parameters.env }} --rule-name allow-agent-ip-$TIMESTAMP --action Allow --ip-address $AGENT_IP --priority 100 --description "Allow pipeline agent IP $AGENT_IP" --scm-site true
 
       - task: AzureWebApp@1
         displayName: 'Azure App Service Deploy: $(appServiceName)'

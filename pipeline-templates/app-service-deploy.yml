@@ -41,17 +41,18 @@ jobs:
       #       PRIORITY=30$(date +%S)
       #       az webapp config access-restriction add --resource-group $(resourceGroupName) --name CDA-service-${{ parameters.env }} --rule-name allow-agent-ip-$TIMESTAMP --action Allow --ip-address $AGENT_IP --priority 100 --description "Allow pipeline agent IP $AGENT_IP" --scm-site true
 
-      - task: AzureWebApp@1
-        displayName: 'Azure App Service Deploy: $(appServiceName)'
-        inputs:
-          azureSubscription: '$(subscription)'
-          appType: 'webAppLinux'
-          appName: '$(appServiceName)'
-          resourceGroupName: '$(resourceGroupName)'
-          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
-          runtimeStack: 'DOTNETCORE|8.0'
+      # - task: AzureWebApp@1
+      #   displayName: 'Azure App Service Deploy: $(appServiceName)'
+      #   inputs:
+      #     azureSubscription: '$(subscription)'
+      #     appType: 'webAppLinux'
+      #     appName: '$(appServiceName)'
+      #     resourceGroupName: '$(resourceGroupName)'
+      #     package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
+      #     runtimeStack: 'DOTNETCORE|8.0'
 
       - task: AzureWebApp@1
+        displayName: 'Deploy to Staging Slot'
         inputs:
           azureSubscription: '$(subscription)'
           appType: webAppLinux #webApp for Windows
@@ -60,8 +61,10 @@ jobs:
           resourceGroupName: '$(resourceGroupName)'
           slotName: '$(slotName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
+          runtimeStack: 'DOTNETCORE|8.0'
 
       - task: AzureAppServiceManage@0
+        displayName: 'Swap to Production slot'
         inputs:
           azureSubscription: '$(subscription)'
           appType: webAppLinux

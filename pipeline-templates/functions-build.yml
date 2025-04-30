@@ -16,7 +16,7 @@ jobs:
         displayName: 'Restore NuGet Packages'
         inputs:
           command: 'restore'
-          projects: '${{ parameters.projectPath }}/app/${{ parameters.packagePath }}.sln'
+          projects: 'app/${{ parameters.packagePath }}.sln'
           feedsToUse: 'select'
           vstsFeed: 'MaPS Digital/MHPD-Shared'
 
@@ -24,14 +24,14 @@ jobs:
         displayName: 'Build Project'
         inputs:
           command: 'build'
-          projects: '${{ parameters.projectPath }}/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.csproj'
+          projects: 'app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.csproj'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
         displayName: 'Run Unit Tests - $(buildConfiguration)'
         inputs:
           command: 'test'
-          projects: '${{ parameters.projectPath }}/tests/${{ parameters.packagePath }}UnitTests/${{ parameters.packagePath }}UnitTests.csproj'
+          projects: 'tests/${{ parameters.packagePath }}UnitTests/${{ parameters.packagePath }}UnitTests.csproj'
           arguments: '--configuration $(buildConfiguration) --logger trx --collect "Code coverage" --results-directory "$(Build.SourcesDirectory)/TestResults/Coverage/"'
           publishTestResults: false
     
@@ -52,7 +52,7 @@ jobs:
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: '${{ parameters.projectPath }}/app/**/*.csproj'
+          projects: 'app/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1

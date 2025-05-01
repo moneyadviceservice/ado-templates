@@ -62,12 +62,12 @@ jobs:
           ArtifactName: 'drop'
           publishLocation: 'Container'
 
-      - script: |
-          chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
-          $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
-        displayName: 'Commit OpenAPI Spec'
-        env:
-          PAT_TOKEN: ${{ parameters.scriptEnvVars.PAT_TOKEN }}
-          BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}
-          SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
-          SERVICE_PATH: ${{ parameters.scriptEnvVars.SERVICE_PATH }}
+      # - script: |
+      #     chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+      #     $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+      #   displayName: 'Commit OpenAPI Spec'
+      #   env:
+      #     PAT_TOKEN: ${{ parameters.scriptEnvVars.PAT_TOKEN }}
+      #     BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}
+      #     SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
+      #     SERVICE_PATH: ${{ parameters.scriptEnvVars.SERVICE_PATH }}

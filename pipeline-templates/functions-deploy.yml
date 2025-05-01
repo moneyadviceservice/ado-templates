@@ -26,20 +26,20 @@ jobs:
         condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'))
         inputs:
           azureSubscription: '$(subscription)'
-          appType: webAppLinux
+          appType: functionApp
           appName: '$(appServiceName)'
           deployToSlotOrASE: true
           resourceGroupName: '$(resourceGroupName)'
           slotName: '$(slotName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
-          runtimeStack: 'DOTNETCORE|8.0'
+          # runtimeStack: 'DOTNETCORE|8.0'
 
       - task: AzureAppServiceManage@0
         displayName: 'Swap to Production slot'
         condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'))
         inputs:
           azureSubscription: '$(subscription)'
-          appType: webAppLinux
+          appType: functionApp
           WebAppName: '$(appServiceName)'
           ResourceGroupName: '$(resourceGroupName)'
           SourceSlot: '$(slotName)'

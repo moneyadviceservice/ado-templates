@@ -4,11 +4,6 @@ jobs:
     pool:
       vmImage: $(vmImageName)
     steps:
-
-      - checkout: self
-      - checkout: ado-templates
-        path: ado-templates
-
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
         inputs:
@@ -70,6 +65,9 @@ jobs:
           azureSubscription: 'ADO-PWD-Connection'
           KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
           SecretsFilter: 'bot-azure-pat' 
+
+      - checkout: ado-templates
+        path: ado-templates
 
       - script: |
           echo "pwd:"

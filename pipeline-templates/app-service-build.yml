@@ -67,8 +67,12 @@ jobs:
           SecretsFilter: 'bot-azure-pat' 
 
       - script: |
-          chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
-          $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          echo "pwd:"
+          pwd
+          echo "ls:"
+          ls $(Build.SourcesDirectory)
+          # chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          # $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         env:
           PAT_TOKEN: '$(bot-azure-pat)'

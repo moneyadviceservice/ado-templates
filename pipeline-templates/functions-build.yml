@@ -66,10 +66,6 @@ jobs:
           publishLocation: 'Container'
 
       - script: |
-          echo "pwd:"
-          pwd
-          echo "ls:"
-          ls $(Build.SourcesDirectory)
           chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
           $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'

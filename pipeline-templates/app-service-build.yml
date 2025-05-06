@@ -4,6 +4,8 @@ jobs:
     pool:
       vmImage: $(vmImageName)
     steps:
+      - checkout: self
+
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
         inputs:
@@ -67,12 +69,8 @@ jobs:
           SecretsFilter: 'bot-azure-pat' 
 
       - script: |
-          echo "pwd:"
-          pwd
-          echo "ls:"
-          ls $(Build.SourcesDirectory)
-          # chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
-          # $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         env:
           PAT_TOKEN: '$(bot-azure-pat)'

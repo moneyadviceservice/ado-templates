@@ -5,7 +5,7 @@ jobs:
       vmImage: $(vmImageName)
     steps:
 
-      # - checkout: self
+      - checkout: self
 
       - script: |
           echo "pwd:"
@@ -25,7 +25,7 @@ jobs:
           command: 'restore'
           feedsToUse: 'select'
           vstsFeed: 'MaPS Digital/MHPD-Shared'
-          projects: 'app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
+          projects: '$(Build.Repository.Name)/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
 
       - task: DotNetCoreCLI@2
         displayName: 'Build Project'
@@ -48,25 +48,25 @@ jobs:
         inputs:
           testResultsFormat: VSTest
           testResultsFiles: '**/*.trx'
-          searchFolder: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+          searchFolder: '$(Build.Repository.Name)/$(Build.SourcesDirectory)/TestResults/Coverage/'
 
       - task: PublishCodeCoverageResults@2
         displayName: 'Publish Code Coverage Results'
         inputs:
-          summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+          summaryFileLocation: '$(Build.Repository.Name)/$(Build.SourcesDirectory)/TestResults/Coverage/'
 
       - task: DotNetCoreCLI@2
         displayName: 'Publish'
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: 'app/**/${{ parameters.packagePath }}.csproj'
+          projects: '$(Build.Repository.Name)/app/**/${{ parameters.packagePath }}.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
         displayName: 'Publish build artifacts'
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+          PathtoPublish: $(Build.Repository.Name)/'$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
 

@@ -5,6 +5,7 @@ jobs:
       vmImage: $(vmImageName)
     steps:
 
+      - checkout: self
       - checkout: ado-templates
 
       - task: UseDotNet@2

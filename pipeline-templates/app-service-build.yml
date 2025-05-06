@@ -5,7 +5,7 @@ jobs:
       vmImage: $(vmImageName)
     steps:
 
-      - checkout: self
+      - checkout: ado-templates
 
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'

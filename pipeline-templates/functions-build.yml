@@ -67,8 +67,8 @@ jobs:
           pwd
           echo "ls:"
           ls $(Build.SourcesDirectory)
-          chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
-          $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          # chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          # $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
         env:

@@ -5,7 +5,7 @@ jobs:
       vmImage: $(vmImageName)
     steps:
 
-      - checkout: self
+      # - checkout: self
 
       - script: |
           echo "pwd:"

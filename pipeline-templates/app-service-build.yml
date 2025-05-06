@@ -32,7 +32,7 @@ jobs:
         inputs:
           command: 'build'
           projects: |
-            '$(projectsToRestoreAndBuild)'
+            '$(Build.Repository.Name)/$(projectsToRestoreAndBuild)'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2

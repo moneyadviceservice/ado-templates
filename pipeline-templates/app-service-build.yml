@@ -4,6 +4,9 @@ jobs:
     pool:
       vmImage: $(vmImageName)
     steps:
+
+      - checkout: self
+
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
         inputs:

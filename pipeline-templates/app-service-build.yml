@@ -7,6 +7,7 @@ jobs:
 
       - checkout: self
       - checkout: ado-templates
+        path: ado-templates
 
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
@@ -75,8 +76,8 @@ jobs:
           pwd
           echo "ls:"
           ls $(Build.SourcesDirectory)
-          # chmod +x $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
-          # $(Build.SourcesDirectory)/pipeline-scripts/commit-specs.sh
+          # chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          # $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         env:
           PAT_TOKEN: '$(bot-azure-pat)'

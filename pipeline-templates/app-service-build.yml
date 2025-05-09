@@ -12,7 +12,7 @@ jobs:
           pwd
           echo "ls:"
           ls $(Build.SourcesDirectory)
-          ls $(Build.Repository.Name)/app/MaPSCDAService
+          ls $(Build.Repository.Name)/app/MaPSCDAService/MaPSCDAService/
         displayName: 'debug'
 
       - task: UseDotNet@2

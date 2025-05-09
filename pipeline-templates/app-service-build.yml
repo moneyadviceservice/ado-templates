@@ -13,6 +13,7 @@ jobs:
           echo "ls:"
           ls $(Build.SourcesDirectory)
           # ls $(Build.Repository.Name)/app/MaPSCDAService/MaPSCDAService/
+          ls MaPSCDAService
         displayName: 'debug'
 
       - task: UseDotNet@2
@@ -26,7 +27,7 @@ jobs:
           command: 'restore'
           feedsToUse: 'select'
           vstsFeed: 'MaPS Digital/MHPD-Shared'
-          projects: '$(Build.Repository.Name)/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
+          projects: '$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln'
 
       - task: DotNetCoreCLI@2
         displayName: 'Build Project'

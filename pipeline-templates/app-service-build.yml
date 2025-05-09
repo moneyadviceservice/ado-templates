@@ -13,7 +13,6 @@ jobs:
           echo "ls:"
           ls $(Build.SourcesDirectory)
           # ls $(Build.Repository.Name)/app/MaPSCDAService/MaPSCDAService/
-          ls MaPSCDAService
         displayName: 'debug'
 
       - task: UseDotNet@2

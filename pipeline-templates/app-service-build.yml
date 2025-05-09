@@ -12,7 +12,7 @@ jobs:
           pwd
           echo "ls:"
           ls $(Build.SourcesDirectory)
-          ls $(Build.Repository.Name)/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
+          ls $(Build.Repository.Name)/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln
         displayName: 'debug'
 
       - task: UseDotNet@2

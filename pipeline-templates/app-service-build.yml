@@ -76,9 +76,12 @@ jobs:
           echo "pwd:"
           pwd
           echo "ls:"
+          ls
           echo "Root of sources directory:"
           echo "$(Build.SourcesDirectory)"
-          ls $(Build.SourcesDirectory)
+          echo "ls mhpd-backend-cda-api"
+          ls mhpd-backend-cda-api
+
           # chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
           # $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'

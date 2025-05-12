@@ -84,8 +84,8 @@ jobs:
           echo "$(Build.SourcesDirectory)/../ado-templates/pipeline-scripts"
           ls -l $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts
           chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
-          cat $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
-          ./$(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          cat $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+          ./$(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
         env:

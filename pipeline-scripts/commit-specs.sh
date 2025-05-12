@@ -10,8 +10,9 @@ echo "TARGET_DIR: $SERVICE_NAME/wwwroot/swagger/v1/"
 echo "BRANCH_NAME: $BRANCH_NAME"
 echo "SERVICE_NAME: $SERVICE_NAME"
 # echo "SERVICE_PATH: $SERVICE_PATH"
-ls -l ../../
-cd ../../mhpd-backend-cda-service/app/$SERVICE_NAME
+pwd
+ls -l ../
+cd ../mhpd-backend-cda-service/app/$SERVICE_NAME
 
 dotnet tool list -g
 dotnet tool restore

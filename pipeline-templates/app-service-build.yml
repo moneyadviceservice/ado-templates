@@ -73,15 +73,14 @@ jobs:
         path: ado-templates
 
       - script: |
-          echo "pwd:"
-          pwd
-          echo "ls:"
-          ls
-          echo "Root of sources directory:"
-          echo "$(Build.SourcesDirectory)"
-          echo "ls mhpd-backend-cda-api"
-          ls mhpd-backend-cda-api
+          echo "Main repo (self) is in: $(Build.SourcesDirectory)"
+          echo "ado-templates repo should be at: $(Build.SourcesDirectory)/ado-templates"
 
+          echo "--- Listing root sources dir:"
+          ls -l $(Build.SourcesDirectory)/..
+
+          echo "--- Listing ado-templates:"
+          ls -l $(Build.SourcesDirectory)/../ado-templates
           # chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
           # $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'

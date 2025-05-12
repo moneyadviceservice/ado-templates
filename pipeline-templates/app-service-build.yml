@@ -73,18 +73,18 @@ jobs:
         path: ado-templates
 
       - script: |
-          echo "Main repo (self) is in: $(Build.SourcesDirectory)"
-          echo "ado-templates repo should be at: $(Build.SourcesDirectory)/ado-templates"
+          # echo "Main repo (self) is in: $(Build.SourcesDirectory)"
+          # echo "ado-templates repo should be at: $(Build.SourcesDirectory)/ado-templates"
 
-          echo "--- Listing root sources dir:"
-          ls -l $(Build.SourcesDirectory)/..
+          # echo "--- Listing root sources dir:"
+          # ls -l $(Build.SourcesDirectory)/..
 
-          echo "--- Listing ado-templates:"
-          ls -l $(Build.SourcesDirectory)/../ado-templates
-          echo "$(Build.SourcesDirectory)/../ado-templates/pipeline-scripts"
-          ls -l $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts
-          chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
-          cat $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+          # echo "--- Listing ado-templates:"
+          # ls -l $(Build.SourcesDirectory)/../ado-templates
+          # echo "$(Build.SourcesDirectory)/../ado-templates/pipeline-scripts"
+          # ls -l $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts
+          # chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+          # cat $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
           $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))

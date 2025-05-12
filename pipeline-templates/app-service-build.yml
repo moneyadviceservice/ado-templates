@@ -67,7 +67,7 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish build artifacts'
         inputs:
-          PathtoPublish: $(Build.Repository.Name)/'$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
 

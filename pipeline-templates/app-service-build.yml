@@ -7,14 +7,6 @@ jobs:
 
       - checkout: self
 
-      - script: |
-          echo "pwd:"
-          pwd
-          echo "ls:"
-          ls $(Build.SourcesDirectory)
-          cat $(Build.Repository.Name)/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.csproj
-        displayName: 'debug'
-
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
         inputs:
@@ -85,9 +77,10 @@ jobs:
           pwd
           echo "ls:"
           ls $(Build.SourcesDirectory)
-          # chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
-          # $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
+        condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
         env:
           PAT_TOKEN: '$(bot-azure-pat)'
           BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}

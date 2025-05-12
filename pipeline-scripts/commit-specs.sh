@@ -11,7 +11,7 @@ echo "BRANCH_NAME: $BRANCH_NAME"
 echo "SERVICE_NAME: $SERVICE_NAME"
 echo "SERVICE_PATH: $SERVICE_PATH"
 
-cd $SERVICE_PATH/$SERVICE_NAME/app/$SERVICE_NAME
+cd app/$SERVICE_NAME
 
 dotnet tool list -g
 dotnet tool restore

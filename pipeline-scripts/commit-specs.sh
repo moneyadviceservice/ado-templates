@@ -11,8 +11,8 @@ echo "BRANCH_NAME: $BRANCH_NAME"
 echo "SERVICE_NAME: $SERVICE_NAME"
 # echo "SERVICE_PATH: $SERVICE_PATH"
 pwd
-ls -l ../
-cd ../mhpd-backend-cda-service/app/$SERVICE_NAME
+ls -l $(Build.SourcesDirectory)
+cd $(Build.SourcesDirectory)/mhpd-backend-cda-service/app/$SERVICE_NAME
 
 dotnet tool list -g
 dotnet tool restore

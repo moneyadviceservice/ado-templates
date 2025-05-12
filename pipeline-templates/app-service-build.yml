@@ -76,9 +76,11 @@ jobs:
           echo "pwd:"
           pwd
           echo "ls:"
+          echo "Root of sources directory:"
+          echo "$(Build.SourcesDirectory)"
           ls $(Build.SourcesDirectory)
-          chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
-          $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          # chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          # $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
         env:

@@ -81,8 +81,8 @@ jobs:
 
           echo "--- Listing ado-templates:"
           ls -l $(Build.SourcesDirectory)/../ado-templates
-          # chmod +x $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
-          # $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
+          chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+          $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'
         condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
         env:

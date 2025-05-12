@@ -81,6 +81,8 @@ jobs:
 
           echo "--- Listing ado-templates:"
           ls -l $(Build.SourcesDirectory)/../ado-templates
+          echo "$(Build.SourcesDirectory)/../ado-templates/pipeline-scripts"
+          ls -l $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts
           chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
           $(Build.SourcesDirectory)/ado-templates/pipeline-scripts/commit-specs.sh
         displayName: 'Commit OpenAPI Spec'

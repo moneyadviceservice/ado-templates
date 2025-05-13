@@ -13,13 +13,13 @@ jobs:
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
         inputs:
-          version: '8.x'
+          version: 8.x
 
       - task: DotNetCoreCLI@2
         displayName: 'Restore Project'
         inputs:
           command: 'restore'
-          projects: 'app/${{ parameters.packagePath }}.sln'
+          projects: '$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln'
           feedsToUse: 'select'
           vstsFeed: 'MaPS Digital/MHPD-Shared'
 
@@ -27,35 +27,35 @@ jobs:
         displayName: 'Build Project'
         inputs:
           command: 'build'
-          projects: 'app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.csproj'
+          projects: '$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln'
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
         displayName: 'Run Unit Tests - $(buildConfiguration)'
         inputs:
           command: 'test'
-          projects: 'tests/${{ parameters.packagePath }}UnitTests/${{ parameters.packagePath }}UnitTests.csproj'
+          projects: '$(Build.Repository.Name)/tests/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --logger trx --collect "Code coverage" --results-directory "$(Build.SourcesDirectory)/TestResults/Coverage/"'
           publishTestResults: false
     
       - task: PublishTestResults@2
         displayName: 'Publish Test Results'
         inputs:
-          testResultsFormat: 'VSTest'
+          testResultsFormat: VSTest
           testResultsFiles: '**/*.trx'
-          searchFolder: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+          searchFolder: '$(Build.Repository.Name)/$(Build.SourcesDirectory)/TestResults/Coverage/'
 
       - task: PublishCodeCoverageResults@2
         displayName: 'Publish Code Coverage Results'
         inputs:
-          summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+          summaryFileLocation: '$(Build.Repository.Name)/$(Build.SourcesDirectory)/TestResults/Coverage/'
 
       - task: DotNetCoreCLI@2
         displayName: 'Publish'
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: 'app/**/*.csproj'
+          projects: '$(Build.Repository.Name)/app/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
@@ -64,6 +64,12 @@ jobs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
+
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'ADO-PWD-Connection'
+          KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+          SecretsFilter: 'bot-azure-pat' 
 
       - checkout: ado-templates
         path: ado-templates
@@ -74,7 +80,7 @@ jobs:
         displayName: 'Commit OpenAPI Spec'
         condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
         env:
-          PAT_TOKEN: ${{ parameters.scriptEnvVars.PAT_TOKEN }}
+          PAT_TOKEN: '$(bot-azure-pat)'
           BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}
           SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
           SERVICE_PATH: ${{ parameters.scriptEnvVars.SERVICE_PATH }}

@@ -7,13 +7,16 @@ echo "BRANCH_NAME: $BRANCH_NAME"
 SERVICE_PATH="${SERVICE_PATH}"
 echo "FUNCTION_NAME: $FUNCTION_NAME"
 
+echo "pwd is:"
+echo "pwd"
+
 TARGET_DIR="$SERVICE_PATH/app/$FUNCTION_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 
 export AzureWebJobsStorage="UseDevelopmentStorage=true"
 export FUNCTIONS_WORKER_RUNTIME="dotnet-isolated"
 export FUNCTIONS_INPROC_NET8_ENABLED="true"
 
-cd app/$FUNCTION_NAME
+cd "$SERVICE_PATH/app/$$FUNCTION_NAME"
 
 npm i -g azure-functions-core-tools@4 --unsafe-perm true
 pwd

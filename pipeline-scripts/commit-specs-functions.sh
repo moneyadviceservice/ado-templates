@@ -7,8 +7,7 @@ echo "BRANCH_NAME: $BRANCH_NAME"
 echo SERVICE_PATH="${SERVICE_PATH}"
 echo FUNCTION_NAME="${FUNCTION_NAME}"
 
-echo "pwd is:"
-pwd
+echo "pwd is: $(pwd)"
 
 TARGET_DIR="$SERVICE_PATH/app/$FUNCTION_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 

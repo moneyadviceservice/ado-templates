@@ -84,4 +84,3 @@ jobs:
           BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}
           SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
           SERVICE_PATH: ${{ parameters.scriptEnvVars.SERVICE_PATH }}
-          SPEC_FILE_NAME: ${{ parameters.scriptEnvVars.SPEC_FILE_NAME }}

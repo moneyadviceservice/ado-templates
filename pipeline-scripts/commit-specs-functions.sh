@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo "SPEC_FILE_NAME=${SPEC_FILE_NAME}"
 echo "TARGET_DIR=$SERVICE_PATH/app/$FUNCTION_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 echo "BRANCH_NAME=${BRANCH_NAME}"
 echo "SERVICE_NAME=${SERVICE_NAME}"
 echo SERVICE_PATH="${SERVICE_PATH}"
+echo SPEC_FILE_NAME="${SPEC_FILE_NAME}"
 # echo FUNCTION_NAME="${FUNCTION_NAME}"
 
 echo "pwd is: $(pwd)"

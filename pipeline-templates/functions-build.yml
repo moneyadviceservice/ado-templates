@@ -85,3 +85,4 @@ jobs:
           SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
           SERVICE_PATH: ${{ parameters.scriptEnvVars.SERVICE_PATH }}
           SPEC_FILE_NAME: ${{ parameters.scriptEnvVars.SPEC_FILE_NAME }}
+          AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}

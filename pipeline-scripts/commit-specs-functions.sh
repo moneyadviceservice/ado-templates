@@ -8,7 +8,7 @@ SERVICE_PATH="${SERVICE_PATH}"
 echo "FUNCTION_NAME: $FUNCTION_NAME"
 
 echo "pwd is:"
-echo "pwd"
+pwd
 
 TARGET_DIR="$SERVICE_PATH/app/$FUNCTION_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 

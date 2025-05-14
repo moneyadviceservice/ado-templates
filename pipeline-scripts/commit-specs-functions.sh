@@ -9,7 +9,7 @@ echo SERVICE_PATH="${SERVICE_PATH}"
 
 echo "pwd is: $(pwd)"
 
-TARGET_DIR="$SERVICE_PATH/app/$SERVICE_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME
+TARGET_DIR="$SERVICE_PATH/app/$SERVICE_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 
 export AzureWebJobsStorage="UseDevelopmentStorage=true"
 export FUNCTIONS_WORKER_RUNTIME="dotnet-isolated"

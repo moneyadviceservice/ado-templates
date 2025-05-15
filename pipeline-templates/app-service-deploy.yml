@@ -10,9 +10,10 @@ jobs:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)/drop'
-        
+
       - task: AzureWebApp@1
         displayName: 'Azure App Service Deploy: $(appServiceName)'
+        condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'))
         inputs:
           azureSubscription: '$(subscription)'
           appType: 'webAppLinux'
@@ -20,3 +21,27 @@ jobs:
           resourceGroupName: '$(resourceGroupName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
           runtimeStack: 'DOTNETCORE|8.0'
+
+      - task: AzureWebApp@1
+        displayName: 'Deploy to Staging Slot'
+        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'))
+        inputs:
+          azureSubscription: '$(subscription)'
+          appType: webAppLinux
+          appName: '$(appServiceName)'
+          deployToSlotOrASE: true
+          resourceGroupName: '$(resourceGroupName)'
+          slotName: '$(slotName)'
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
+          runtimeStack: 'DOTNETCORE|8.0'
+
+      - task: AzureAppServiceManage@0
+        displayName: 'Swap to Production slot'
+        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'))
+        inputs:
+          azureSubscription: '$(subscription)'
+          appType: webAppLinux
+          WebAppName: '$(appServiceName)'
+          ResourceGroupName: '$(resourceGroupName)'
+          SourceSlot: '$(slotName)'
+          SwapWithProduction: true

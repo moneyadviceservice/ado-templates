@@ -1,0 +1,11 @@
+- job: exportSpec
+  displayName: "Export API Spec"
+  steps:
+    - checkout: self
+      fetchDepth: 2 
+      
+    - script: |
+        chmod +x $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
+        $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
+      displayName: 'Export API Spec to api-docs repo'
+      name: 'exportSpec'

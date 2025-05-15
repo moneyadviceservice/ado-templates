@@ -4,6 +4,9 @@ jobs:
     pool:
       vmImage: $(vmImageName)
     steps:
+
+      - checkout: self
+
       - task: UseDotNet@2
         displayName: 'Install .NET Core 8.x'
         inputs:
@@ -15,21 +18,21 @@ jobs:
           command: 'restore'
           feedsToUse: 'select'
           vstsFeed: 'MaPS Digital/MHPD-Shared'
-          projects: '${{ parameters.projectPath }}/app/${{ parameters.packagePath }}/${{ parameters.packagePath }}.sln'
+          projects: '$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln'
 
       - task: DotNetCoreCLI@2
         displayName: 'Build Project'
         inputs:
           command: 'build'
           projects: |
-            '$(projectsToRestoreAndBuild)'
+            $(projectsToRestoreAndBuild)
           arguments: '--configuration $(buildConfiguration)'
 
       - task: DotNetCoreCLI@2
         displayName: 'Run Unit Tests - $(buildConfiguration)'
         inputs:
           command: 'test'
-          projects: '${{ parameters.projectPath }}/tests/**/*.csproj'
+          projects: '$(Build.Repository.Name)/tests/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --logger trx --collect "Code coverage" --results-directory "$(Build.SourcesDirectory)/TestResults/Coverage/"'
           publishTestResults: false
 
@@ -38,19 +41,19 @@ jobs:
         inputs:
           testResultsFormat: VSTest
           testResultsFiles: '**/*.trx'
-          searchFolder: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+          searchFolder: '$(Build.Repository.Name)/$(Build.SourcesDirectory)/TestResults/Coverage/'
 
       - task: PublishCodeCoverageResults@2
         displayName: 'Publish Code Coverage Results'
         inputs:
-          summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/Coverage/'
+          summaryFileLocation: '$(Build.Repository.Name)/$(Build.SourcesDirectory)/TestResults/Coverage/'
 
       - task: DotNetCoreCLI@2
         displayName: 'Publish'
         inputs:
           command: 'publish'
           publishWebProjects: false
-          projects: '${{ parameters.projectPath }}/app/**/${{ parameters.packagePath }}.csproj'
+          projects: '$(Build.Repository.Name)/app/**/${{ parameters.packagePath }}.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: PublishBuildArtifacts@1
@@ -59,3 +62,34 @@ jobs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
+
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'ADO-PWD-Connection'
+          KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+          SecretsFilter: 'bot-azure-pat' 
+
+      - checkout: ado-templates
+        path: ado-templates
+
+      - script: |
+          # echo "Main repo (self) is in: $(Build.SourcesDirectory)"
+          # echo "ado-templates repo should be at: $(Build.SourcesDirectory)/ado-templates"
+          echo "Build.Repository.Name is $(Build.Repository.Name)"
+          # echo "--- Listing root sources dir:"
+          # ls -l $(Build.SourcesDirectory)
+
+          # echo "--- Listing ado-templates:"
+          # ls -l $(Build.SourcesDirectory)/../ado-templates
+          # echo "$(Build.SourcesDirectory)/../ado-templates/pipeline-scripts"
+          # ls -l $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts
+          chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+          # cat $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+          $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs.sh
+        displayName: 'Commit OpenAPI Spec'
+        condition: and(succeeded(), ne('${{ parameters.commitOpenApiSpec }}', 'false'))
+        env:
+          PAT_TOKEN: '$(bot-azure-pat)'
+          BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}
+          SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
+          SERVICE_PATH: ${{ parameters.scriptEnvVars.SERVICE_PATH }}

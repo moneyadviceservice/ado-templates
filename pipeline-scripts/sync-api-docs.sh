@@ -14,10 +14,10 @@ GITHUB_PAT=$BOT_GITHUB_PAT
 GITHUB_LOCAL_DIR="github_repo"
 
 echo "the service name is $SERVICE_NAME"
-echo "the file path is $AZURE_FILE_PATH"
+echo "the file path is $AZURE_REPO"
 
 # Check if the file exists
-SOURCE_PATH="$AZURE_FILE_PATH"
+SOURCE_PATH="$AZURE_REPO"
 if [[ ! -f "$SOURCE_PATH" ]]; then
     echo "Error: File $AZURE_FILE_PATH not found in Azure repo."
     exit 1

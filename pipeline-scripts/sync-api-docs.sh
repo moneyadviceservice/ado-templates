@@ -19,7 +19,7 @@ SERVICE_NAME="$AZURE_REPO"  # or set this explicitly
 SPEC_FILE="$SPEC_FILE"
 
 # Construct full path to your spec file in the checked out repo
-SOURCE_PATH="${AZURE_FILE_PATH}"
+SOURCE_PATH="${AZURE_REPO}/${AZURE_FILE_PATH}"
 
 echo "Service name: $SERVICE_NAME"
 echo "Spec file path: $SOURCE_PATH"

@@ -1,10 +1,11 @@
-- job: incrementRevision
-  displayName: "Increment API Revision"
-  dependsOn: exportSpec
-  variables:
-    API_SPEC_UPDATED: $[ dependencies.exportSpec.outputs['setApiSpecUpdated.API_SPEC_UPDATED'] ]
-  steps:
-  - script: |
-      chmod +x $(Build.SourcesDirectory)/pipeline-scripts/bump-revision.sh
-      $(Build.SourcesDirectory)/pipeline-scripts/bump-revision.sh
+jobs:
+  - job: incrementRevision
     displayName: "Increment API Revision"
+    dependsOn: exportSpec
+    variables:
+      API_SPEC_UPDATED: $[ dependencies.exportSpec.outputs['setApiSpecUpdated.API_SPEC_UPDATED'] ]
+    steps:
+    - script: |
+        chmod +x $(Build.SourcesDirectory)/pipeline-scripts/bump-revision.sh
+        $(Build.SourcesDirectory)/pipeline-scripts/bump-revision.sh
+      displayName: "Increment API Revision"

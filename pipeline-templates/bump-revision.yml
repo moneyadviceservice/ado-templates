@@ -5,7 +5,14 @@ jobs:
     variables:
       API_SPEC_UPDATED: $[ dependencies.exportSpec.outputs['setApiSpecUpdated.API_SPEC_UPDATED'] ]
     steps:
+
+    - checkout: ado-templates
+      path: ado-templates
+
     - script: |
+        pwd
+        ls
+
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
         $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
       displayName: "Increment API Revision"

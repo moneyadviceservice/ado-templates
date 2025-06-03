@@ -15,17 +15,6 @@ jobs:
           SecretsFilter: 'bot-azure-pat, bot-github-pat'
 
       - script: |
-          echo "Current working directory:"
-          pwd
-          echo "Listing contents of parent directory:"
-           ls ../
-
-          echo "Listing contents of current directory:"
-          ls
-
-          echo "Listing contents of SourcesDirectory:"
-          ls $(Build.SourcesDirectory)
-
           chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh
           $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh
         displayName: 'Export API Spec to api-docs repo'

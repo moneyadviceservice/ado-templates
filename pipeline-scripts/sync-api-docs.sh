@@ -17,7 +17,7 @@ echo "the service name is $SERVICE_NAME"
 echo "the file path is $AZURE_REPO"
 
 # Check if the file exists
-SOURCE_PATH="$AZURE_REPO"
+SOURCE_PATH="app"
 if [[ ! -f "$SOURCE_PATH" ]]; then
     echo "Error: File $AZURE_FILE_PATH not found in Azure repo."
     exit 1

@@ -12,7 +12,7 @@ jobs:
           SecretsFilter: 'bot-azure-pat, bot-github-pat'
 
       - script: |
-          chmod +x $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
-          $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
+          chmod +x $(Build.SourcesDirectory)/../pipeline-scripts/sync-api-docs.sh
+          $(Build.SourcesDirectory)/../pipeline-scripts/sync-api-docs.sh
         displayName: 'Export API Spec to api-docs repo'
         name: 'exportSpec'

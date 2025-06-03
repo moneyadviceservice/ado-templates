@@ -5,7 +5,7 @@ set -euo pipefail
 AZURE_ORG="moneyadviceservice"
 AZURE_PROJECT="MaPS%20Digital"
 AZURE_REPO="${AZURE_REPO}"
-AZURE_PAT="$BOT_AZURE_PAT"
+AZURE_PAT="${BOT_AZURE_PAT}"
 
 GITHUB_USER="maps-devops-bot"
 GITHUB_EMAIL="NotificationBot@maps.org.uk"

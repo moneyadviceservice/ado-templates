@@ -18,7 +18,7 @@ jobs:
           echo "Current working directory:"
           pwd
           echo "Listing contents of parent directory:"
-          ls ../
+           ls ../
 
           echo "Listing contents of current directory:"
           ls ../
@@ -30,3 +30,7 @@ jobs:
           $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh
         displayName: 'Export API Spec to api-docs repo'
         name: 'exportSpec'
+        env:
+         SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
+         AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}
+         PAT_TOKEN: '$(bot-github-pat)'

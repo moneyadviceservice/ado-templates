@@ -1,48 +1,65 @@
 #!/bin/bash
 
+set -euo pipefail
+
 AZURE_ORG="moneyadviceservice"
 AZURE_PROJECT="MaPS%20Digital"
-AZURE_REPO=$AZURE_REPO
-AZURE_PAT=$BOT_AZURE_PAT
+AZURE_REPO="${AZURE_REPO}"
+AZURE_PAT="$BOT_AZURE_PAT"
 
 GITHUB_USER="maps-devops-bot"
 GITHUB_EMAIL="NotificationBot@maps.org.uk"
 GITHUB_REPO="api-docs"
 GITHUB_BRANCH="main"
-GITHUB_PAT=$BOT_GITHUB_PAT
+GITHUB_PAT="$BOT_GITHUB_PAT"
 
 GITHUB_LOCAL_DIR="github_repo"
+SERVICE_NAME="$AZURE_REPO"  # or set this explicitly
+SPEC_FILE=$SPEC_FILE
 
-echo "the service name is $SERVICE_NAME"
-echo "the file path is $AZURE_REPO"
+# Construct full path to your spec file in the checked out repo
+SOURCE_PATH="${AZURE_REPO}/app/SERVICE_NAME/wwwroot/swagger/v1/${SPEC_FILE}"
 
+echo "Service name: $SERVICE_NAME"
+echo "Spec file path: $SOURCE_PATH"
+
+# Debug info: show current directory and list files
 pwd
-ls
-ls $AZURE_REPO/app
+ls -l
+ls -l "$(dirname "$SOURCE_PATH")"
 
-echo "break"
-
-# Check if the file exists
-SOURCE_PATH="$AZURE_REPO/app"
+# Check if spec file exists
 if [[ ! -f "$SOURCE_PATH" ]]; then
-    echo "Error: File $AZURE_FILE_PATH not found in Azure repo."
+    echo "❌ Error: Spec file $SOURCE_PATH not found."
     exit 1
 fi
 
+# Configure git user
 git config --global user.email "$GITHUB_EMAIL"
 git config --global user.name "$GITHUB_USER"
 git config --global init.defaultBranch main
 
-echo "Cloning GitHub repository..."
-git clone https://$GITHUB_USER:$GITHUB_PAT@github.com/$AZURE_ORG/"$GITHUB_REPO".git "$GITHUB_LOCAL_DIR"
+# Clone GitHub repo to a local directory
+echo "Cloning GitHub repo $GITHUB_REPO..."
+git clone "https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${AZURE_ORG}/${GITHUB_REPO}.git" "$GITHUB_LOCAL_DIR"
 
+# Define destination path for the spec inside GitHub repo
 DEST_PATH="$GITHUB_LOCAL_DIR/specs/$SPEC_FILE"
+
+# Make sure the specs directory exists
+mkdir -p "$(dirname "$DEST_PATH")"
+
+# Copy the spec file to the GitHub repo directory
 cp "$SOURCE_PATH" "$DEST_PATH"
 
+# Commit & push changes
 cd "$GITHUB_LOCAL_DIR" || exit
+
 git add "specs/$SPEC_FILE"
-git commit -m "Update $SERVICE_NAME spec" || {
-      echo "No changes to commit."
-      exit 1
-    }
-git push -f https://$GITHUB_USER:$GITHUB_PAT@github.com/$AZURE_ORG/$GITHUB_REPO.git $GITHUB_BRANCH
+
+if git diff --cached --quiet; then
+    echo "No changes to commit."
+else
+    git commit -m "Update $SERVICE_NAME spec"
+    git push -f "https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${AZURE_ORG}/${GITHUB_REPO}.git" "$GITHUB_BRANCH"
+fi

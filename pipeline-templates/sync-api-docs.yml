@@ -36,3 +36,4 @@ jobs:
          PAT_TOKEN: '$(bot-github-pat)'
          BOT_AZURE_PAT: '$(bot-azure-pat)'
          BOT_GITHUB_PAT: '$(bot-github-pat)'
+         SPEC_FILE: ${{ parameters.scriptEnvVars.SPEC_FILE }}

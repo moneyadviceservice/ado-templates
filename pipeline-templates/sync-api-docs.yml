@@ -21,7 +21,7 @@ jobs:
            ls ../
 
           echo "Listing contents of current directory:"
-          ls ../
+          ls
 
           echo "Listing contents of SourcesDirectory:"
           ls $(Build.SourcesDirectory)

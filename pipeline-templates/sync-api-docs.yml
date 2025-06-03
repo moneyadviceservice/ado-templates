@@ -8,6 +8,9 @@ jobs:
       - checkout: ado-templates
         path: ado-templates
 
+      - checkout: mhpd-backend-cda-service
+        path: mhpd-backend-cda-service
+
       - task: AzureKeyVault@2
         inputs:
           azureSubscription: 'ADO-PWD-Connection'

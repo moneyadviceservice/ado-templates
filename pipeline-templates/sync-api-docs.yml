@@ -12,7 +12,9 @@ jobs:
           SecretsFilter: 'bot-azure-pat, bot-github-pat'
 
       - script: |
+          echo "Current working directory:"
           pwd
+          echo "Listing contents of parent directory:"
           ls ../
           chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh
           $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh

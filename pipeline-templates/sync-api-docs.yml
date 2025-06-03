@@ -34,3 +34,5 @@ jobs:
          SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
          AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}
          PAT_TOKEN: '$(bot-github-pat)'
+         BOT_AZURE_PAT: '$(bot-azure-pat)'
+         BOT_GITHUB_PAT: '$(bot-github-pat)'

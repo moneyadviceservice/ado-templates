@@ -5,6 +5,9 @@ jobs:
       - checkout: self
         fetchDepth: 2 
 
+      - checkout: ado-templates
+        path: ado-templates
+
       - task: AzureKeyVault@2
         inputs:
           azureSubscription: 'ADO-PWD-Connection'

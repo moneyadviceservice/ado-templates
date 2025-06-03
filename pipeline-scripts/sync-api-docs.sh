@@ -15,7 +15,7 @@ GITHUB_PAT="$BOT_GITHUB_PAT"
 
 GITHUB_LOCAL_DIR="github_repo"
 SERVICE_NAME="$AZURE_REPO"  # or set this explicitly
-SPEC_FILE=$SPEC_FILE
+SPEC_FILE="$SPEC_FILE"
 
 # Construct full path to your spec file in the checked out repo
 SOURCE_PATH="${AZURE_REPO}/app/SERVICE_NAME/wwwroot/swagger/v1/${SPEC_FILE}"

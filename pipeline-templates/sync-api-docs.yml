@@ -1,11 +1,18 @@
-- job: exportSpec
-  displayName: "Export API Spec"
-  steps:
-    - checkout: self
-      fetchDepth: 2 
-      
-    - script: |
-        chmod +x $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
-        $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
-      displayName: 'Export API Spec to api-docs repo'
-      name: 'exportSpec'
+jobs:
+  - job: exportSpec
+    displayName: "Export API Spec"
+    steps:
+      - checkout: self
+        fetchDepth: 2 
+
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'ADO-PWD-Connection'
+          KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+          SecretsFilter: 'bot-azure-pat, bot-github-pat'
+
+      - script: |
+          chmod +x $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
+          $(Build.SourcesDirectory)/pipeline-scripts/sync-api-docs.sh
+        displayName: 'Export API Spec to api-docs repo'
+        name: 'exportSpec'

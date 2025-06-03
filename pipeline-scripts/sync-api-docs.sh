@@ -18,9 +18,12 @@ echo "the file path is $AZURE_REPO"
 
 pwd
 ls
+ls $AZURE_REPO/app
+
+echo "break"
 
 # Check if the file exists
-SOURCE_PATH="app"
+SOURCE_PATH="$AZURE_REPO/app"
 if [[ ! -f "$SOURCE_PATH" ]]; then
     echo "Error: File $AZURE_FILE_PATH not found in Azure repo."
     exit 1

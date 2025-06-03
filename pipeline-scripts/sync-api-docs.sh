@@ -16,6 +16,9 @@ GITHUB_LOCAL_DIR="github_repo"
 echo "the service name is $SERVICE_NAME"
 echo "the file path is $AZURE_REPO"
 
+pwd
+ls
+
 # Check if the file exists
 SOURCE_PATH="app"
 if [[ ! -f "$SOURCE_PATH" ]]; then

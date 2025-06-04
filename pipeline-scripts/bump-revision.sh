@@ -7,8 +7,9 @@ CALLING_REPO_DIR="service-repo"
 
 pwd
 ls
-echo "$CALLING_REPO_DIR/$TARGET_DIR"
-ls $CALLING_REPO_DIR/$TARGET_DIR
+cd service-repo
+ls
+ls $TARGET_DIR
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"

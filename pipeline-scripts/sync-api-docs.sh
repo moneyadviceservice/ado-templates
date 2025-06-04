@@ -24,36 +24,25 @@ SOURCE_PATH="${AZURE_REPO}/${AZURE_FILE_PATH}"
 echo "Service name: $SERVICE_NAME"
 echo "Spec file path: $SOURCE_PATH"
 
-# Debug info: show current directory and list files
-pwd
-ls -l
-ls -l "$(dirname "$SOURCE_PATH")"
-
 # Check if spec file exists
 if [[ ! -f "$SOURCE_PATH" ]]; then
-    echo "❌ Error: Spec file $SOURCE_PATH not found."
+    echo "Error: Spec file $SOURCE_PATH not found."
     exit 1
 fi
 
-# Configure git user
 git config --global user.email "$GITHUB_EMAIL"
 git config --global user.name "$GITHUB_USER"
 git config --global init.defaultBranch main
 
-# Clone GitHub repo to a local directory
 echo "Cloning GitHub repo $GITHUB_REPO..."
 git clone "https://${GITHUB_USER}:${GITHUB_PAT}@github.com/${AZURE_ORG}/${GITHUB_REPO}.git" "$GITHUB_LOCAL_DIR"
 
-# Define destination path for the spec inside GitHub repo
 DEST_PATH="$GITHUB_LOCAL_DIR/specs/$SPEC_FILE"
 
-# Make sure the specs directory exists
 mkdir -p "$(dirname "$DEST_PATH")"
 
-# Copy the spec file to the GitHub repo directory
 cp "$SOURCE_PATH" "$DEST_PATH"
 
-# Commit & push changes
 cd "$GITHUB_LOCAL_DIR" || exit
 
 git add "specs/$SPEC_FILE"

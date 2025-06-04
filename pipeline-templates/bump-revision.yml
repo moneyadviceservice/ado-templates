@@ -11,8 +11,7 @@ jobs:
 
     - script: |
         pwd
-        ls
-        ls ../
+        ls ../../
         echo "break"
 
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh

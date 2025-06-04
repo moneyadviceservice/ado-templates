@@ -10,11 +10,11 @@ CALLING_REPO_DIR="service-repo"
 # cd service-repo
 # ls
 # ls $TARGET_DIR
-echo "SourcesDirectory: $(Build.SourcesDirectory)"
-echo "Correct service-repo location: $(Build.SourcesDirectory)/../service-repo"
+echo "SourcesDirectory: $SOURCES_DIR"
+echo "Correct service-repo location: $SOURCES_DIR/../service-repo"
 
 echo "Changing to service-repo..."
-cd "$(Build.SourcesDirectory)/../service-repo"
+cd "$SOURCES_DIR/../service-repo"
 pwd
 ls -la
 

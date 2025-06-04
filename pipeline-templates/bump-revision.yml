@@ -33,3 +33,4 @@ jobs:
         SOURCE_PATH: ${{ parameters.scriptEnvVars.SOURCE_PATH }}
         SOURCES_DIR: $(Build.SourcesDirectory)
         PAT_TOKEN: $(bot-azure-pat)
+        BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}

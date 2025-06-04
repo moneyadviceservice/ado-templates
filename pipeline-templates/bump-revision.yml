@@ -12,7 +12,7 @@ jobs:
     - checkout: ado-templates
       path: ado-templates
 
-    - checkout: ${{ parameters.serviceRepoAlias }}
+    - checkout: ${{ parameters..scriptEnvVars.serviceRepoAlias }}
       path: service-repo
 
     - task: AzureKeyVault@2

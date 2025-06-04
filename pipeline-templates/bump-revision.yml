@@ -1,3 +1,6 @@
+parameters:
+  serviceRepoAlias: ''
+
 jobs:
   - job: incrementRevision
     displayName: "Increment API Revision"
@@ -9,7 +12,7 @@ jobs:
     - checkout: ado-templates
       path: ado-templates
 
-    - checkout: $(AZURE_REPO)
+    - checkout: ${{ parameters.serviceRepoAlias }}
       path: service-repo
 
     - task: AzureKeyVault@2

@@ -27,4 +27,4 @@ git checkout -b update-spec
 git add $TF_FILE
 git commit -m "Bump API revision to $next_revision"
 git push -f https://$PAT_TOKEN@dev.azure.com/moneyandpensionsservice/MaPS%20Digital/_git/$AZURE_REPO HEAD:update-spec
-az repos pr create --repository "$AZURE_REPO" --target-branch develop --source-branch update-spec --title "Update OpenAPI spec" --bypass-policy true --delete-source-branch true --draft false
+az repos pr create --repository "$AZURE_REPO" --target-branch main --source-branch update-spec --title "Update OpenAPI spec" --bypass-policy true --delete-source-branch true --draft false

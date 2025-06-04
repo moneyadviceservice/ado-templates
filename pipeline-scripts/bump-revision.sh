@@ -5,6 +5,7 @@ COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
 
 echo "SourcesDirectory: $SOURCES_DIR"
+echo "branch name id: $BRANCH_NAME"
 echo "Correct service-repo location: $SOURCES_DIR/../service-repo"
 
 echo "Changing to service-repo..."

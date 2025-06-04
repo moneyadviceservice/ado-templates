@@ -24,3 +24,4 @@ jobs:
         AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}
         SOURCE_PATH: ${{ parameters.scriptEnvVars.SOURCE_PATH }}
         SOURCES_DIR: $(Build.SourcesDirectory)
+        PAT_TOKEN: ${{ parameters.scriptEnvVars.PAT_TOKEN }}

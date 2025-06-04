@@ -4,18 +4,11 @@ SERVICE_NAME="${SERVICE_NAME}"
 COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
 
-# pwd
-# ls
-# cd service-repo
-# ls
-# ls $TARGET_DIR
 echo "SourcesDirectory: $SOURCES_DIR"
 echo "Correct service-repo location: $SOURCES_DIR/../service-repo"
 
 echo "Changing to service-repo..."
 cd "$SOURCES_DIR/../service-repo"
-pwd
-ls -la
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"
@@ -29,7 +22,7 @@ echo "Next API Revision: $next_revision"
 
 awk -v new_revision="$next_revision" '/revision[[:space:]]*=/ {sub(/"[^"]*"/, "\"" new_revision "\"")} 1' $TF_FILE > temp && mv temp $TF_FILE
 
-git pull origin $BRANCH_NAME
+git pull origin $BRANCH_NAME --rebase
 git checkout -b update-spec
 git add $TF_FILE
 git commit -m "Bump API revision to $next_revision"

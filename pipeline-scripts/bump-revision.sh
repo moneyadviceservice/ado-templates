@@ -3,11 +3,12 @@
 SERVICE_NAME="${SERVICE_NAME}"
 COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
+CALLING_REPO_DIR=$SOURCE_PATH/service-repo
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"
 
-cd $TARGET_DIR
+cd $CALLING_REPO_DIR/$TARGET_DIR
 current_revision=$(grep 'revision' $TF_FILE | awk -F'= ' '{print $2}' | tr -d '"')
 
 next_revision=$((current_revision + 1))

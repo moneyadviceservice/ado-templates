@@ -26,6 +26,7 @@ awk -v new_revision="$next_revision" '/revision[[:space:]]*=/ {sub(/"[^"]*"/, "\
 # git pull origin $BRANCH_NAME
 git pull origin main
 git checkout -b update-spec
+git branch --show-current
 git add $TF_FILE
 git commit -m "Bump API revision to $next_revision"
 git push -f https://$PAT_TOKEN@dev.azure.com/moneyandpensionsservice/MaPS%20Digital/_git/$AZURE_REPO HEAD:refs/heads/update-spec

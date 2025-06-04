@@ -9,7 +9,7 @@ jobs:
     - checkout: ado-templates
       path: ado-templates
 
-    - checkout: mhpd-backend-cda-service
+    - checkout: $(AZURE_REPO)
       path: service-repo
 
     - task: AzureKeyVault@2

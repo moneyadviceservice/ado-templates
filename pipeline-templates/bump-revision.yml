@@ -1,6 +1,9 @@
 parameters:
   serviceRepoAlias: ''
 
+variables:
+  AZURE_DEVOPS_EXT_PAT: $(bot-azure-pat) 
+
 jobs:
   - job: incrementRevision
     displayName: "Increment API Revision"

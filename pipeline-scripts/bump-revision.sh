@@ -4,6 +4,13 @@ SERVICE_NAME="${SERVICE_NAME}"
 COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
 
+echo "🔐 Logging into Azure DevOps CLI..."
+export AZURE_DEVOPS_EXT_PAT=$AZURE_DEVOPS_EXT_PAT
+
+az devops configure --defaults \
+  organization=https://dev.azure.com/moneyandpensionsservice \
+  project="MaPS Digital"
+
 echo "SourcesDirectory: $SOURCES_DIR"
 echo "branch name is: $BRANCH_NAME"
 echo "Correct service-repo location: $SOURCES_DIR/../service-repo"

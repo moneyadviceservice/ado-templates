@@ -5,6 +5,9 @@ COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
 CALLING_REPO_DIR=$SOURCE_PATH/service-repo
 
+echo "$CALLING_REPO_DIR/$TARGET_DIR"
+ls $CALLING_REPO_DIR/$TARGET_DIR
+
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"
 

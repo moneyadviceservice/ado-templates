@@ -5,6 +5,8 @@ COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
 CALLING_REPO_DIR="service-repo"
 
+pwd
+ls
 echo "$CALLING_REPO_DIR/$TARGET_DIR"
 ls $CALLING_REPO_DIR/$TARGET_DIR
 

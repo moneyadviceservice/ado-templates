@@ -1,9 +1,13 @@
 #!/bin/bash
 
+SERVICE_NAME="${SERVICE_NAME}"
+COMPONENT="${COMPONENT}"
+TARGET_DIR="infrastructure/components/$COMPONENT"
+
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"
 
-cd shared-infrastructure/components/apim
+cd $TARGET_DIR
 current_revision=$(grep 'revision' $TF_FILE | awk -F'= ' '{print $2}' | tr -d '"')
 
 next_revision=$((current_revision + 1))

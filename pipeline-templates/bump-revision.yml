@@ -1,3 +1,6 @@
+parameters:
+  serviceRepoAlias: ''
+
 jobs:
   - job: incrementRevision
     displayName: "Increment API Revision"
@@ -5,7 +8,30 @@ jobs:
     variables:
       API_SPEC_UPDATED: $[ dependencies.exportSpec.outputs['setApiSpecUpdated.API_SPEC_UPDATED'] ]
     steps:
+
+    - checkout: ado-templates
+      path: ado-templates
+
+    - checkout: ${{ parameters.scriptEnvVars.serviceRepoAlias }}
+      path: service-repo
+
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'ADO-PWD-Connection'
+        KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+        SecretsFilter: 'bot-azure-pat'
+
     - script: |
-        chmod +x $(Build.SourcesDirectory)/pipeline-scripts/bump-revision.sh
-        $(Build.SourcesDirectory)/pipeline-scripts/bump-revision.sh
+        chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
+        $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
       displayName: "Increment API Revision"
+      env:
+        SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
+        COMPONENT: ${{ parameters.scriptEnvVars.COMPONENT }}
+        TF_FILE: ${{ parameters.scriptEnvVars.TF_FILE }}
+        AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}
+        SOURCE_PATH: ${{ parameters.scriptEnvVars.SOURCE_PATH }}
+        SOURCES_DIR: $(Build.SourcesDirectory)
+        PAT_TOKEN: $(bot-azure-pat)
+        BRANCH_NAME: ${{ parameters.scriptEnvVars.BRANCH_NAME }}
+        AZURE_DEVOPS_EXT_PAT: $(bot-azure-pat) 

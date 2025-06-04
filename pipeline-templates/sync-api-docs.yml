@@ -5,6 +5,9 @@ jobs:
       - checkout: self
         fetchDepth: 2 
 
+      - checkout: ado-templates
+        path: ado-templates
+
       - task: AzureKeyVault@2
         inputs:
           azureSubscription: 'ADO-PWD-Connection'
@@ -12,7 +15,15 @@ jobs:
           SecretsFilter: 'bot-azure-pat, bot-github-pat'
 
       - script: |
-          chmod +x $(Build.SourcesDirectory)/../pipeline-scripts/sync-api-docs.sh
-          $(Build.SourcesDirectory)/../pipeline-scripts/sync-api-docs.sh
+          chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh
+          $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/sync-api-docs.sh
         displayName: 'Export API Spec to api-docs repo'
         name: 'exportSpec'
+        env:
+         SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
+         AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}
+         PAT_TOKEN: '$(bot-github-pat)'
+         BOT_AZURE_PAT: '$(bot-azure-pat)'
+         BOT_GITHUB_PAT: '$(bot-github-pat)'
+         SPEC_FILE: ${{ parameters.scriptEnvVars.SPEC_FILE }}
+         AZURE_FILE_PATH: ${{ parameters.scriptEnvVars.AZURE_FILE_PATH }}

@@ -8,13 +8,13 @@ echo "SourcesDirectory: $SOURCES_DIR"
 echo "branch name is: $BRANCH_NAME"
 echo "Correct service-repo location: $SOURCES_DIR/../service-repo"
 
-echo "Changing to service-repo..."
+echo "Cd to service-repo"
 cd "$SOURCES_DIR/../service-repo"
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"
 
-echo "🔐 Logging into Azure DevOps CLI..."
+echo "Log into Azure DevOps CLI"
 export AZURE_DEVOPS_EXT_PAT=$AZURE_DEVOPS_EXT_PAT
 
 az devops configure --defaults \

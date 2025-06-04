@@ -17,6 +17,8 @@ jobs:
         ls
         ls ../
         echo "break"
+        cd service-repo
+        ls
 
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
         $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh

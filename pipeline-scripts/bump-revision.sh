@@ -5,11 +5,11 @@ COMPONENT="${COMPONENT}"
 TARGET_DIR="infrastructure/components/$COMPONENT"
 CALLING_REPO_DIR="service-repo"
 
-pwd
-ls
-cd service-repo
-ls
-ls $TARGET_DIR
+# pwd
+# ls
+# cd service-repo
+# ls
+# ls $TARGET_DIR
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"

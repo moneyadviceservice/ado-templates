@@ -23,7 +23,8 @@ echo "Next API Revision: $next_revision"
 
 awk -v new_revision="$next_revision" '/revision[[:space:]]*=/ {sub(/"[^"]*"/, "\"" new_revision "\"")} 1' $TF_FILE > temp && mv temp $TF_FILE
 
-git pull origin $BRANCH_NAME
+# git pull origin $BRANCH_NAME
+git pull origin main
 git checkout -b update-spec
 git add $TF_FILE
 git commit -m "Bump API revision to $next_revision"

@@ -10,6 +10,13 @@ CALLING_REPO_DIR="service-repo"
 # cd service-repo
 # ls
 # ls $TARGET_DIR
+echo "SourcesDirectory: $(Build.SourcesDirectory)"
+echo "Correct service-repo location: $(Build.SourcesDirectory)/../service-repo"
+
+echo "Changing to service-repo..."
+cd "$(Build.SourcesDirectory)/../service-repo"
+pwd
+ls -la
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"

@@ -12,18 +12,7 @@ jobs:
     - checkout: mhpd-backend-cda-service
       path: service-repo
 
-        echo "Current directory:"
-        pwd
-
-        echo "Top-level directory:"
-        ls -la $(Build.SourcesDirectory)
-
-        echo "Changing to service-repo..."
-        cd "$(Build.SourcesDirectory)/service-repo"
-        echo "Contents of service-repo:"
-        ls -la
-
-        echo "break"
+    - script: |
 
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
         $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh

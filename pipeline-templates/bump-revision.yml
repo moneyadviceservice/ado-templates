@@ -19,6 +19,14 @@ jobs:
         SecretsFilter: 'bot-azure-pat'
 
     - script: |
+        echo "Checking if PAT is available..."
+        if [ -z "$PAT_TOKEN" ]; then
+          echo "❌ PAT is empty"
+          exit 1
+        else
+          echo "✅ PAT is available"
+        fi
+
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
         $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
       displayName: "Increment API Revision"

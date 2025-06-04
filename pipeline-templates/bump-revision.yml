@@ -12,8 +12,13 @@ jobs:
     - checkout: mhpd-backend-cda-service
       path: service-repo
 
-    - script: |
+    - task: AzureKeyVault@2
+      inputs:
+        azureSubscription: 'ADO-PWD-Connection'
+        KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+        SecretsFilter: 'bot-azure-pat'
 
+    - script: |
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
         $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
       displayName: "Increment API Revision"
@@ -24,4 +29,4 @@ jobs:
         AZURE_REPO: ${{ parameters.scriptEnvVars.AZURE_REPO }}
         SOURCE_PATH: ${{ parameters.scriptEnvVars.SOURCE_PATH }}
         SOURCES_DIR: $(Build.SourcesDirectory)
-        PAT_TOKEN: ${{ parameters.scriptEnvVars.PAT_TOKEN }}
+        PAT_TOKEN: $(bot-azure-pat)

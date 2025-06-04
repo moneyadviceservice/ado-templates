@@ -10,7 +10,6 @@ jobs:
       path: ado-templates
 
     - checkout: mhpd-backend-cda-service
-      repository: MaPS%20Digital/mhpd-backend-cda-service
       path: service-repo
 
     - script: |

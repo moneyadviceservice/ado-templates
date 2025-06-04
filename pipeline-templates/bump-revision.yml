@@ -20,3 +20,5 @@ jobs:
       displayName: "Increment API Revision"
       env:
         SERVICE_NAME: ${{ parameters.scriptEnvVars.SERVICE_NAME }}
+        COMPONENT: ${{ parameters.scriptEnvVars.COMPONENT }}
+        TF_FILE: ${{ parameters.scriptEnvVars.TF_FILE }}

@@ -12,7 +12,9 @@ jobs:
     - script: |
         pwd
         ls
-
+        ls ../
+        echo "break"
+        
         chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
         $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/bump-revision.sh
       displayName: "Increment API Revision"

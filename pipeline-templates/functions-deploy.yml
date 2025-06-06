@@ -27,7 +27,7 @@ jobs:
         inputs:
           azureSubscription: '$(subscription)'
           appType: functionApp
-          appName: '$(appServiceName)'
+          appName: '$(functionAppName)'
           deployToSlotOrASE: true
           resourceGroupName: '$(resourceGroupName)'
           slotName: '$(slotName)'
@@ -40,7 +40,7 @@ jobs:
         inputs:
           azureSubscription: '$(subscription)'
           appType: functionApp
-          WebAppName: '$(appServiceName)'
+          WebAppName: '$(functionAppName)'
           ResourceGroupName: '$(resourceGroupName)'
           SourceSlot: '$(slotName)'
           SwapWithProduction: true

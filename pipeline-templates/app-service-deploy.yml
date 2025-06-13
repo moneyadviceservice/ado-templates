@@ -2,13 +2,19 @@ parameters:
   - name: poolName
     type: string
     default: ''
+  - name: vmImageName
+    type: string
+    default: 'ubuntu-latest'
 
 jobs:
   - job: Deploy
     displayName: 'Deploy to App Service'
-    ${{ if parameters.poolName != '' }}:
+    ${{ if ne(parameters.poolName, '') }}:
       pool:
         name: ${{ parameters.poolName }}
+    ${{ if eq(parameters.poolName, '') }}:
+      pool:
+        vmImage: ${{ parameters.vmImageName }}
     steps:
       - script: |
          echo "Running on custom pool: ${{ parameters.poolName }}"

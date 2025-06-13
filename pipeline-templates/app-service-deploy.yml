@@ -1,8 +1,12 @@
 jobs:
   - job: Deploy
-    displayName: 'Deploy to $(appServiceName)'
-    pool:
-      vmImage: $(vmImageName)
+    displayName: 'Deploy to App Service'
+${{ if variables.poolName }}:
+  pool:
+    name: ${{ variables.poolName }}
+${{ if not(variables.poolName) }}:
+  pool:
+    vmImage: ${{ variables.vmImageName }}
     steps:
       - task: DownloadPipelineArtifact@2
         displayName: 'Download Build Artifact'

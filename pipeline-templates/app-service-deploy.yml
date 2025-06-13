@@ -5,6 +5,14 @@ parameters:
   - name: vmImageName
     type: string
     default: 'ubuntu-latest'
+  - name: appServiceName
+    type: string
+  - name: slotName
+    type: string
+  - name: env
+    type: string
+  - name: packagePath
+    type: string
 
 jobs:
   - job: Deploy

@@ -7,12 +7,16 @@ parameters:
     default: 'ubuntu-latest'
   - name: appServiceName
     type: string
+    default: ''
   - name: slotName
     type: string
+    default: ''
   - name: env
     type: string
+    default: ''
   - name: packagePath
     type: string
+    default: ''
 
 jobs:
   - job: Deploy

@@ -23,7 +23,7 @@ jobs:
 
       - task: AzureWebApp@1
         displayName: 'Deploy to Staging Slot'
-        condition: and(succeeded()) # , eq('${{ parameters.env }}', 'prod'))
+         # condition: and(succeeded() , eq('${{ parameters.env }}', 'prod'))
         inputs:
           azureSubscription: '$(subscription)'
           appType: functionApp
@@ -36,7 +36,7 @@ jobs:
 
       - task: AzureAppServiceManage@0
         displayName: 'Swap to Production slot'
-        condition: and(succeeded()) # , eq('${{ parameters.env }}', 'prod'))
+         # condition: and(succeeded() , eq('${{ parameters.env }}', 'prod'))
         inputs:
           azureSubscription: '$(subscription)'
           appType: functionApp

@@ -10,7 +10,6 @@ echo "Correct service-repo location: $SOURCES_DIR/../service-repo"
 
 echo "Cd to service-repo"
 cd "$SOURCES_DIR/../service-repo"
-echo "pwd is: $(pwd)"
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"
@@ -23,6 +22,8 @@ az devops configure --defaults \
   project="MaPS Digital"
 
 cd $TARGET_DIR
+echo "pwd is: $(pwd)"
+echo "ls is: $(ls)"
 current_revision=$(grep 'revision' $TF_FILE | awk -F'= ' '{print $2}' | tr -d '"')
 
 next_revision=$((current_revision + 1))

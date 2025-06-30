@@ -10,6 +10,7 @@ echo "Correct service-repo location: $SOURCES_DIR/../service-repo"
 
 echo "Cd to service-repo"
 cd "$SOURCES_DIR/../service-repo"
+echo "pwd is: $(pwd)"
 
 git config --global user.email "NotificationBot@maps.org.uk"
 git config --global user.name "Notification Bot"

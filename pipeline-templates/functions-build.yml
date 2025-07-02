@@ -15,16 +15,16 @@ jobs:
         inputs:
           version: 8.x
 
-      - task: Bash@3
-        displayName: Debug current directory
-        inputs:
-          targetType: 'inline'
-          script: |
-            echo "Current directory: $(pwd)"
-            echo "Directory contents:"
-            ls -la
-            ls $(Build.Repository.Name)
-            echo "$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln"
+      # - task: Bash@3
+      #   displayName: Debug current directory
+      #   inputs:
+      #     targetType: 'inline'
+      #     script: |
+      #       echo "Current directory: $(pwd)"
+      #       echo "Directory contents:"
+      #       ls -la
+      #       ls $(Build.Repository.Name)
+      #       echo "$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln"
 
       - task: DotNetCoreCLI@2
         displayName: 'Restore Project'
@@ -69,20 +69,10 @@ jobs:
           projects: '$(Build.Repository.Name)/app/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
-      - task: Bash@3
-        displayName: Debug published files
-        inputs:
-          targetType: 'inline'
-          script: |
-            echo "Current directory: $(pwd)"
-            echo "Directory contents:"
-            ls -la "$(Build.ArtifactStagingDirectory)"
-            find / -name "Cryptopack.zip"
-
       - task: PublishBuildArtifacts@1
         displayName: 'Publish build artifacts'
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.serviceName != '' ? parameters.serviceName : parameters.packagePath }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
 

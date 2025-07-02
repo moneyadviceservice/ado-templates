@@ -69,6 +69,16 @@ jobs:
           projects: '$(Build.Repository.Name)/app/**/*.csproj'
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
+      - task: Bash@3
+        displayName: Debug current directory
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "Current directory: $(pwd)"
+            echo "Directory contents:"
+            ls -la "$(Build.ArtifactStagingDirectory)"
+            find / -name "Cryptopack.zip"
+
       - task: PublishBuildArtifacts@1
         displayName: 'Publish build artifacts'
         inputs:

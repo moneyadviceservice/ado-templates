@@ -70,7 +70,7 @@ jobs:
           arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
       - task: Bash@3
-        displayName: Debug current directory
+        displayName: Debug published files
         inputs:
           targetType: 'inline'
           script: |

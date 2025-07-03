@@ -1,3 +1,13 @@
+# parameters:
+#   ${{ if eq( parameters['serviceName'], '') }}:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+#   ${{ else }}:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.serviceName }}.zip'
+
+
+variables:
+  buildFileName: $[ coalesce(parameters.serviceName, parameters.packagePath) ]
+
 jobs:
   - job: Build
     displayName: Build
@@ -72,12 +82,9 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish build artifacts'
         inputs:
-        ${{ if eq( parameters['serviceName'], '') }}:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
-        ${{ else }}:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.serviceName }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(buildFileName).zip'
 
       - task: AzureKeyVault@2
         inputs:

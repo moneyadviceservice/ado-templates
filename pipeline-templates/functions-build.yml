@@ -72,8 +72,10 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: 'Publish build artifacts'
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/ + (parameters.serviceName != '' ? parameters.serviceName : parameters.packagePath) + .zip'
-          # PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+        ${{ if eq( parameters['serviceName'], '') }}:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.packagePath }}.zip'
+        ${{ else }}:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{ parameters.serviceName }}.zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
 

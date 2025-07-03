@@ -15,17 +15,6 @@ jobs:
         inputs:
           version: 8.x
 
-      - task: Bash@3
-        displayName: Debug current directory
-        inputs:
-          targetType: 'inline'
-          script: |
-            echo "Current directory: $(pwd)"
-            echo "Directory contents:"
-            ls -la
-            ls $(Build.Repository.Name)
-            echo "$(Build.Repository.Name)/app/${{ parameters.packagePath }}.sln"
-
       - task: DotNetCoreCLI@2
         displayName: 'Restore Project'
         inputs:

@@ -22,6 +22,8 @@ az devops configure --defaults \
   project="MaPS Digital"
 
 cd $TARGET_DIR
+echo "pwd is: $(pwd)"
+echo "ls is: $(ls)"
 current_revision=$(grep 'revision' $TF_FILE | awk -F'= ' '{print $2}' | tr -d '"')
 
 next_revision=$((current_revision + 1))

@@ -14,7 +14,7 @@ jobs:
         
       - task: AzureFunctionApp@1
         displayName: 'Azure Function App Deploy: $(functionAppName)'
-        # condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'))
+        condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'))
         inputs:
           azureSubscription: $(subscription)
           appType: functionApp

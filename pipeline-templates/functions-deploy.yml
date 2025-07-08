@@ -23,7 +23,7 @@ jobs:
 
       - task: AzureWebApp@1
         displayName: 'Deploy to Staging Slot'
-        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'))
+        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'), eq('${{ parameters.serviceName }}', ''))
         inputs:
           azureSubscription: '$(subscription)'
           appType: functionApp
@@ -33,6 +33,18 @@ jobs:
           slotName: '$(slotName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
           # runtimeStack: 'DOTNETCORE|8.0'
+
+      - task: AzureWebApp@1
+        displayName: 'Deploy to Staging Slot'
+        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'), ne('${{ parameters.serviceName }}', ''))
+        inputs:
+          azureSubscription: '$(subscription)'
+          appType: functionApp
+          appName: '$(functionAppName)'
+          deployToSlotOrASE: true
+          resourceGroupName: '$(resourceGroupName)'
+          slotName: '$(slotName)'
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.serviceName }}.zip'
 
       - task: AzureAppServiceManage@0
         displayName: 'Swap to Production slot'

@@ -25,7 +25,6 @@ parameters:
     values:
       - plan
       - apply
-      - destroy
 
   - name: product
     default: ''

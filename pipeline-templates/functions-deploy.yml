@@ -5,7 +5,7 @@ parameters:
   - name: vmImageName
     type: string
     default: 'ubuntu-latest'
-  - name: appServiceName
+  - name: functionAppName
     type: string
     default: ''
   - name: slotName

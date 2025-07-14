@@ -30,6 +30,7 @@ jobs:
     ${{ if eq(parameters.poolName, '') }}:
       pool:
         vmImage: ${{ parameters.vmImageName }}
+
     steps:
       - script: |
          echo "Running on custom pool: ${{ parameters.poolName }}"
@@ -40,7 +41,7 @@ jobs:
           buildType: 'current'
           artifactName: 'drop'
           targetPath: '$(Pipeline.Workspace)/drop'
-        
+
       - task: AzureFunctionApp@1
         displayName: 'Azure Function App Deploy: $(functionAppName)'
         condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'), ne('${{ parameters.serviceName }}', ''))
@@ -58,6 +59,15 @@ jobs:
           appType: functionApp
           appName: $(functionAppName)
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
+
+      - task: AzureFunctionApp@1
+        displayName: 'Azure Function App Deploy: $(functionAppName)'
+        condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'), ne('${{ parameters.serviceName }}', ''))
+        inputs:
+          azureSubscription: $(subscription)
+          appType: functionApp
+          appName: $(functionAppName)
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.serviceName }}.zip'
 
       - task: AzureWebApp@1
         displayName: 'Deploy to Staging Slot'

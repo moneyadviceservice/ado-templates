@@ -1,12 +1,12 @@
 jobs:
-  - job: Deploy
-    displayName: 'Deploy to App Service'
-    ${{ if ne(parameters.poolName, '') }}:
-      pool:
-        name: ${{ parameters.poolName }}
-    ${{ if eq(parameters.poolName, '') }}:
-      pool:
-        vmImage: ${{ parameters.vmImageName }}
+- job: Deploy
+  displayName: 'Deploy to App Service'
+  ${{ if parameters.poolName }}:
+    pool:
+      name: ${{ parameters.poolName }}
+  ${{ if not(parameters.poolName) }}:
+    pool:
+      vmImage: ${{ parameters.vmImageName }}
     steps:
       - script: |
          echo "Running on custom pool: ${{ parameters.poolName }}"

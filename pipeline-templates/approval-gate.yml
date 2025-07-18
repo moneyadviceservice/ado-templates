@@ -11,7 +11,7 @@ steps:
     displayName: 'Approval Pending'
     inputs:
       notifyUsers: ${{ parameters.notificationGroup }}
-      approvers: ${{ parameters.notificationGroups }}
+      approvers: ${{ parameters.notificationGroup }}
       instructions: 'Please approve the deployment to proceed.'
       onTimeout: 'reject'
       timeout: '1h'

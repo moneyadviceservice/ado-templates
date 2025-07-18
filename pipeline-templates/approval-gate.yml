@@ -2,9 +2,9 @@ jobs:
   - job: ManualApproval
     displayName: 'Approval Pending'
     steps:
-      - task: ManualValidation@0
+      - task: ManualValidation@1
         inputs:
-          notifyUsers: '$(notificationGroup)'
+          notifyUsers: ${{ parameters.notificationGroup }}
           instructions: 'Please approve the deployment to proceed.'
           onTimeout: 'reject'
           timeout: '1d'

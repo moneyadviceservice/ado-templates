@@ -8,9 +8,6 @@ parameters:
   - name: applyCommandOptions
     default: ''
 
-  - name: destroyCommandOptions
-    default: ''
-
   - name: environment
     default: dev
 
@@ -128,22 +125,3 @@ steps:
         workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
       environmentServiceName: ${{ parameters.serviceConnection }}
       commandOptions: "${{ parameters.applyCommandOptions }} -auto-approve tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
-
-  - ${{ if eq(parameters.overrideAction, 'destroy') }}:
-      - task: TerraformCLI@1
-        displayName: Terraform destroy ${{ parameters.component }}
-        ${{ if parameters.terraformEnvironmentVariables }}:
-          env: ${{ parameters.terraformEnvironmentVariables  }}
-        condition: and(succeeded(), eq(variables['isMain'], true), eq('${{ parameters.overrideAction }}', 'destroy'))
-        inputs:
-          command: destroy
-          ${{ if eq( parameters['baseDirectory'], '') }}:
-            workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
-          ${{ else }}:
-            workingDirectory: '$(System.DefaultWorkingDirectory)/${{ parameters.baseDirectory }}/${{ parameters.component }}'
-          environmentServiceName: ${{ parameters.serviceConnection }}
-          ${{ if eq(parameters['tfVarsFile'], '') }}:
-            commandOptions: >
-              -var env=${{ parameters.environment }}
-              -var product=${{ parameters.product }} ${{ parameters.destroyCommandOptions }}
-              -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"

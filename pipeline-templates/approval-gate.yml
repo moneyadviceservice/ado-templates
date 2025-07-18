@@ -1,4 +1,7 @@
 parameters:
+  - name: env
+    type: string
+    default: ''
   - name: notificationGroup
     type: string
     default: ''

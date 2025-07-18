@@ -6,6 +6,7 @@ parameters:
     type: string
     default: ''
 
+steps:
   - task: ManualValidation@1
     displayName: 'Approval Pending'
     inputs:

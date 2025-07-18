@@ -12,7 +12,8 @@ jobs:
     steps:
       - task: ManualValidation@1
         inputs:
-          notifyUsers: 'zoe.cope@solirius.com' #${{ parameters.notificationGroup }}
+          notifyUsers: ${{ parameters.notificationGroup }}
+          approvers: ${{ parameters.notificationGroup }}
           instructions: 'Please approve the deployment to proceed.'
           onTimeout: 'reject'
           timeout: '1d'

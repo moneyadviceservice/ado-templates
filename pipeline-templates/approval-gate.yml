@@ -6,16 +6,15 @@ parameters:
     type: string
     default: ''
 
-jobs:
   - job: ManualApproval
     displayName: 'Approval Pending'
     steps:
       - task: ManualValidation@1
         inputs:
           notifyUsers: ${{ parameters.notificationGroup }}
-          approvers: ${{ parameters.notificationGroup }}
+          approvers: ${{ parameters.notificationGroups }}
           instructions: 'Please approve the deployment to proceed.'
           onTimeout: 'reject'
-          timeout: '1d'
+          timeout: '1h'
           continueOnError: false
         name: WaitForApproval

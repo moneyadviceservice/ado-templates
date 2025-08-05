@@ -9,7 +9,7 @@ echo "TARGET_DIR: $TARGET_DIR"
 echo "BRANCH_NAME: $BRANCH_NAME"
 echo "SERVICE_NAME: $SERVICE_NAME"
 
-cd "app/$SERVICE_NAME"
+cd "$SERVICE_PATH/app/$SERVICE_NAME"
 
 dotnet tool list -g
 dotnet tool restore

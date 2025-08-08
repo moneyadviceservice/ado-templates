@@ -44,7 +44,7 @@ jobs:
 
       - task: AzureFunctionApp@1
         displayName: 'Azure Function App Deploy: $(functionAppName)'
-        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'), ne('${{ parameters.serviceName }}', ''))
+        condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'), ne('${{ parameters.serviceName }}', ''))
         inputs:
           azureSubscription: $(subscription)
           appType: functionApp
@@ -62,7 +62,7 @@ jobs:
 
       - task: AzureFunctionApp@1
         displayName: 'Azure Function App Deploy: $(functionAppName)'
-        condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'), ne('${{ parameters.serviceName }}', ''))
+        condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'), eq('${{ parameters.serviceName }}', ''))
         inputs:
           azureSubscription: $(subscription)
           appType: functionApp

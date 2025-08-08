@@ -53,15 +53,6 @@ jobs:
 
       - task: AzureFunctionApp@1
         displayName: 'Azure Function App Deploy: $(functionAppName)'
-        condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'), eq('${{ parameters.serviceName }}', ''))
-        inputs:
-          azureSubscription: $(subscription)
-          appType: functionApp
-          appName: $(functionAppName)
-          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
-
-      - task: AzureFunctionApp@1
-        displayName: 'Azure Function App Deploy: $(functionAppName)'
         condition: and(succeeded(), ne('${{ parameters.env }}', 'prod'), eq('${{ parameters.serviceName }}', ''))
         inputs:
           azureSubscription: $(subscription)
@@ -81,6 +72,15 @@ jobs:
           slotName: '$(slotName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
           # runtimeStack: 'DOTNETCORE|8.0'
+
+      # - task: AzureFunctionApp@1
+      #   displayName: 'Azure Function App Deploy: $(functionAppName)'
+      #   condition: and(succeeded(), eq('${{ parameters.env }}', 'prod'), eq('${{ parameters.serviceName }}', ''))
+      #   inputs:
+      #     azureSubscription: $(subscription)
+      #     appType: functionApp
+      #     appName: $(functionAppName)
+      #     package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
 
       - task: AzureWebApp@1
         displayName: 'Deploy to Staging Slot'

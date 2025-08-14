@@ -43,7 +43,7 @@ if [[ -n $(git status --porcelain "$TARGET_DIR") ]]; then
     git pull origin $BRANCH_NAME
     git add wwwroot/swagger/v1/
     git commit -m "Auto-update OpenAPI spec"
-    git push https://$PAT_TOKEN@dev.azure.com/moneyandpensionsservice/MaPS%20Digital/_git/$AZURE_REPO HEAD:refs/heads/update-spec
+    git push https://$PAT_TOKEN@dev.azure.com/moneyandpensionsservice/MaPS%20Digital/_git/$AZURE_REPO HEAD:refs/heads/$BRANCH_NAME
 else
     echo "✅ No changes detected. Skipping commit."
 fi

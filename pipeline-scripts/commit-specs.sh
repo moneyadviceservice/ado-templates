@@ -27,7 +27,7 @@ if [[ -n $(git status --porcelain "$TARGET_DIR") ]]; then
     # Commit and push changes
     git add $TARGET_DIR
     git commit -m "Auto-update OpenAPI spec"
-    git push https://$PAT_TOKEN@dev.azure.com/moneyandpensionsservice/MaPS%20Digital/_git/$AZURE_REPO HEAD:refs/heads/$BRANCH_NAME
+    git push https://$PAT_TOKEN@dev.azure.com/moneyandpensionsservice/MaPS%20Digital/_git/$AZURE_REPO HEAD:$BRANCH_NAME
 else
     echo "✅ No changes detected. Skipping commit."
 fi

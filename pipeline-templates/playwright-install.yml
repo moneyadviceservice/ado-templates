@@ -13,8 +13,8 @@ parameters:
     type: string
     default: '20.x'
 
-# pool:
-#   vmImage: $(vmImageName)
+pool:
+  vmImage: $(vmImageName)
 
 # variables:
   # - group: ${{ format('mhpdE2eTest-{0}', parameters.environment) }}

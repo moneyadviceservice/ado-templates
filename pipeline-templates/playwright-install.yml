@@ -25,9 +25,9 @@ parameters:
   # - name: FUNCTIONAL_TESTS_WORKERS
   #   value: '3'
 
-# stages:
-#   - stage: Setup
-#     displayName: 'Setup'
+stages:
+  - stage: Setup
+    displayName: 'Setup'
     jobs:
       - job: Install
         displayName: 'Install dependencies and Playwright'

@@ -42,9 +42,15 @@ jobs:
 
       - task: Npm@1
         inputs:
-          command: 'ci'
+          command: 'install'
           workingDir: '$(System.DefaultWorkingDirectory)'
         displayName: 'Install npm dependencies'
+
+      # - task: Npm@1
+      #   inputs:
+      #     command: 'ci'
+      #     workingDir: '$(System.DefaultWorkingDirectory)'
+      #   displayName: 'Install npm dependencies'
       # - script: |
       #     npm ci
       #   displayName: 'Install npm dependencies'

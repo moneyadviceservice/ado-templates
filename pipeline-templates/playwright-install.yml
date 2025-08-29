@@ -59,7 +59,7 @@ jobs:
       - task: AzureKeyVault@2
         inputs:
           azureSubscription: 'ADO-PWD-Connection'
-          KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+          KeyVaultName:  ${{ parameters.VAULT_NAME }}
           SecretsFilter: 'api-test-cookie, api-test-request-id, api-test-ticket, cda-bearer-token, code-verifier, pension-dashboard-pension-dashboard-password, test-client-secret' 
 
       # - script: |

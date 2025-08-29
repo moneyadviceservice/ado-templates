@@ -40,12 +40,14 @@ jobs:
           versionSpec: ${{ parameters.node_version }}
         displayName: 'Install Node.js'
 
-      - task: Npm@1
-        inputs:
-          command: 'install'
-          workingDir: '$(System.DefaultWorkingDirectory)'
+      # - task: Npm@1
+      #   inputs:
+      #     command: 'install'
+      #     workingDir: '$(System.DefaultWorkingDirectory)'
+      #   displayName: 'Install npm dependencies'
+      - script: |
+          npm ci
         displayName: 'Install npm dependencies'
-
       # - task: Npm@1
       #   inputs:
       #     command: 'ci'

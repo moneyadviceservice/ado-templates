@@ -13,8 +13,8 @@ parameters:
     type: string
     default: '20.x'
 
-pool:
-  vmImage: $(vmImageName)
+# pool:
+#   vmImage: $(vmImageName)
 
 # variables:
   # - group: ${{ format('mhpdE2eTest-{0}', parameters.environment) }}
@@ -25,62 +25,61 @@ pool:
   # - name: FUNCTIONAL_TESTS_WORKERS
   #   value: '3'
 
-stages:
-  - stage: Setup
-    displayName: 'Setup'
-    jobs:
-      - job: Install
-        displayName: 'Install dependencies and Playwright'
-        steps:
-          - task: NodeTool@0
-            inputs:
-              versionSpec: ${{ parameters.node_version }}
-            displayName: 'Install Node.js'
+  # - stage: Setup
+  #   displayName: 'Setup'
+jobs:
+  - job: Install
+    displayName: 'Install dependencies and Playwright'
+    steps:
+      - task: NodeTool@0
+        inputs:
+          versionSpec: ${{ parameters.node_version }}
+        displayName: 'Install Node.js'
 
-          - task: Npm@1
-            inputs:
-              command: 'ci'
-              workingDir: '$(System.DefaultWorkingDirectory)'
-            displayName: 'Install npm dependencies'
-          # - script: |
-          #     npm ci
-          #   displayName: 'Install npm dependencies'
+      - task: Npm@1
+        inputs:
+          command: 'ci'
+          workingDir: '$(System.DefaultWorkingDirectory)'
+        displayName: 'Install npm dependencies'
+      # - script: |
+      #     npm ci
+      #   displayName: 'Install npm dependencies'
 
-          # - task: CmdLine@2
-          #   inputs:
-          #     script: |
-          #       chmod -R 755 $(System.DefaultWorkingDirectory)
-          #       chmod +x # ./node_modules/.bin/playwright
-          #   displayName: 'Fix Permissions for directory'
+      # - task: CmdLine@2
+      #   inputs:
+      #     script: |
+      #       chmod -R 755 $(System.DefaultWorkingDirectory)
+      #       chmod +x # ./node_modules/.bin/playwright
+      #   displayName: 'Fix Permissions for directory'
 
-          - script: |
-              npx playwright install --with-deps
-            displayName: 'Install Playwright browsers'
+      - script: |
+          npx playwright install --with-deps
+        displayName: 'Install Playwright browsers'
 
-          - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: 'ADO-PWD-Connection'
-              KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
-              SecretsFilter: 'api-test-cookie, api-test-request-id, api-test-ticket, cda-bearer-token, code-verifier, pension-dashboard-pension-dashboard-password, test-client-secret' 
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: 'ADO-PWD-Connection'
+          KeyVaultName:  ${{ parameters.scriptEnvVars.VAULT_NAME }}
+          SecretsFilter: 'api-test-cookie, api-test-request-id, api-test-ticket, cda-bearer-token, code-verifier, pension-dashboard-pension-dashboard-password, test-client-secret' 
 
-          # - script: |
-          #     echo 'env var for pension dashboard: $(PENSION_DASHBOARD_URL)'
-          #     echo 'env var for api domain:$(MHPD_API_DOMAIN)'
-          #     echo 'env var for pension-dashboard-password: $(pension-dashboard-password)'
-          #     echo 'env var for test ticket: $(api-test-ticket)'
-          #     echo 'env var for redict url: $(REDIRECT_TEST_URL)'
-          #     echo 'env var for code verifier: $(code-verifier)'
-          #   env:
-          #     PENSION_DASHBOARD_URL: ${{ parameters.scriptEnvVars.PENSION_DASHBOARD_URL }}
-          #     MHPD_API_DOMAIN: ${{ parameters.scriptEnvVars.MHPD_API_DOMAIN }}
-          #     pension-dashboard-password: ${{ parameters.scriptEnvVars.pension-dashboard-password }}
-          #     api-test-ticket: ${{ parameters.scriptEnvVars.api-test-ticket }}
-          #     REDIRECT_TEST_URL: ${{ parametersscriptEnvVars.REDIRECT_TEST_URL }}
-          #     code-verifier: ${{ parameters.scriptEnvVars.code-verifier }}
-          #   displayName: 'Retrieve Stored Variables and secrets'
+      # - script: |
+      #     echo 'env var for pension dashboard: $(PENSION_DASHBOARD_URL)'
+      #     echo 'env var for api domain:$(MHPD_API_DOMAIN)'
+      #     echo 'env var for pension-dashboard-password: $(pension-dashboard-password)'
+      #     echo 'env var for test ticket: $(api-test-ticket)'
+      #     echo 'env var for redict url: $(REDIRECT_TEST_URL)'
+      #     echo 'env var for code verifier: $(code-verifier)'
+      #   env:
+      #     PENSION_DASHBOARD_URL: ${{ parameters.scriptEnvVars.PENSION_DASHBOARD_URL }}
+      #     MHPD_API_DOMAIN: ${{ parameters.scriptEnvVars.MHPD_API_DOMAIN }}
+      #     pension-dashboard-password: ${{ parameters.scriptEnvVars.pension-dashboard-password }}
+      #     api-test-ticket: ${{ parameters.scriptEnvVars.api-test-ticket }}
+      #     REDIRECT_TEST_URL: ${{ parametersscriptEnvVars.REDIRECT_TEST_URL }}
+      #     code-verifier: ${{ parameters.scriptEnvVars.code-verifier }}
+      #   displayName: 'Retrieve Stored Variables and secrets'
 
-          - task: PublishPipelineArtifact@1
-            inputs:
-              artifact: 'workspace'
-              targetPath: '$(System.DefaultWorkingDirectory)'
-            displayName: 'Download workspace artifact'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          artifact: 'workspace'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+        displayName: 'Download workspace artifact'

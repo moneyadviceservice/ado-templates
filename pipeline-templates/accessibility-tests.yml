@@ -4,43 +4,43 @@
   # - stage: Accessibility
   #   displayName: 'Accessibility Tests'
   #   dependsOn: Setup
-  - job: AccessibilityTests
-    displayName: 'Run Accessibility Tests'
-    steps:
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: 'workspace'
-          targetPath: '$(System.DefaultWorkingDirectory)/tests'
-        displayName: 'Download Workspace Artifact'
+    - job: AccessibilityTests
+      displayName: 'Run Accessibility Tests'
+      steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: 'workspace'
+            targetPath: '$(System.DefaultWorkingDirectory)/tests'
+          displayName: 'Download Workspace Artifact'
 
-      # - task: CmdLine@2
-      #   inputs:
-      #     script: |
-      #       chmod -R 755 $(System.DefaultWorkingDirectory)
-      #       chmod +x ./node_modules/.bin/playwright
-      #   displayName: 'Fix Permissions for directory'
+        # - task: CmdLine@2
+        #   inputs:
+        #     script: |
+        #       chmod -R 755 $(System.DefaultWorkingDirectory)
+        #       chmod +x ./node_modules/.bin/playwright
+        #   displayName: 'Fix Permissions for directory'
 
-      - task: CmdLine@2
-        inputs:
-          script: |
-            npx playwright install &&
-            npx playwright test --grep @accessibility --project=chromium
-        env:
-          PENSION_DASHBOARD_URL: $(PENSION_DASHBOARD_URL)
-          pension-dashboard-password: $(pension-dashboard-password)
-        displayName: 'Run Accessibility tests'
-        continueOnError: true
+        - task: CmdLine@2
+          inputs:
+            script: |
+              npx playwright install &&
+              npx playwright test --grep @accessibility --project=chromium
+          env:
+            PENSION_DASHBOARD_URL: $(PENSION_DASHBOARD_URL)
+            pension-dashboard-password: $(pension-dashboard-password)
+          displayName: 'Run Accessibility tests'
+          continueOnError: true
 
-      - task: PublishHtmlReport@1
-        displayName: 'Accessibility Test HTML Results'
-        inputs:
-          htmlType: 'Axe-Core'
-          reportDir: 'test-results'
-          tabName: 'Accessibility Tests'
-        condition: always()
+        - task: PublishHtmlReport@1
+          displayName: 'Accessibility Test HTML Results'
+          inputs:
+            htmlType: 'Axe-Core'
+            reportDir: 'test-results'
+            tabName: 'Accessibility Tests'
+          condition: always()
 
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFiles: '**/**/result.xml'
-          testRunTitle: 'MHPD Accessibility Tests'
-        displayName: 'Publish Accessibility Test Results'
+        - task: PublishTestResults@2
+          inputs:
+            testResultsFiles: '**/**/result.xml'
+            testRunTitle: 'MHPD Accessibility Tests'
+          displayName: 'Publish Accessibility Test Results'

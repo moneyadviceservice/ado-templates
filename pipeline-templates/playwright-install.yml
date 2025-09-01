@@ -40,26 +40,11 @@ jobs:
           versionSpec: ${{ parameters.node_version }}
         displayName: 'Install Node.js'
 
-      # - task: Npm@1
-      #   inputs:
-      #     command: 'install'
-      #     workingDir: '$(System.DefaultWorkingDirectory)'
-      #   displayName: 'Install npm dependencies'
-      # - script: |
-      #     npm ci
-      #   displayName: 'Install npm dependencies'
       - task: Npm@1
         inputs:
           command: 'ci'
           workingDir: '$(System.DefaultWorkingDirectory)'
         displayName: 'Install npm dependencies'
-
-      # - task: CmdLine@2
-      #   inputs:
-      #     script: |
-      #       chmod -R 755 $(System.DefaultWorkingDirectory)
-      #       chmod +x # ./node_modules/.bin/playwright
-      #   displayName: 'Fix Permissions for directory'
 
       - script: |
           npx playwright install --with-deps
@@ -90,5 +75,5 @@ jobs:
       - task: PublishPipelineArtifact@1
         inputs:
           artifact: 'workspace'
-          targetPath: '$(System.DefaultWorkingDirectory)'
+          targetPath: '$(System.DefaultWorkingDirectory)/tests'
         displayName: 'Download workspace artifact'

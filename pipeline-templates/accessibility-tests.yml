@@ -6,6 +6,7 @@
   #   dependsOn: Setup
   - job: AccessibilityTests
     displayName: 'Run Accessibility Tests'
+    dependsOn: Install
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:

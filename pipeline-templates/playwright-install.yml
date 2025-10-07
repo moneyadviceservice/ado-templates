@@ -79,11 +79,12 @@ jobs:
         displayName: 'Download workspace artifact'
   
       #   accessibility tests
-      - task: DownloadPipelineArtifact@2
+      - task: CmdLine@2
         inputs:
-          artifact: 'workspace'
-          targetPath: '$(System.DefaultWorkingDirectory)/tests'
-        displayName: 'Download Workspace Artifact'
+          script: |
+            chmod -R 755 $(System.DefaultWorkingDirectory)
+            chmod +x ./node_modules/.bin/playwright
+        displayName: 'Fix Permissions for directory'
 
       - task: CmdLine@2
         inputs:

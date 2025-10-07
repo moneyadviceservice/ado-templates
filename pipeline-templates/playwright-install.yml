@@ -90,7 +90,7 @@ jobs:
         inputs:
           script: |
             echo "pwd is $(pwd)"
-        displayName: 'show current working directory''
+        displayName: 'show current working directory'
 
       - task: CmdLine@2
         inputs:

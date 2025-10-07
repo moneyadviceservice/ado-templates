@@ -89,6 +89,12 @@ jobs:
       - task: CmdLine@2
         inputs:
           script: |
+            echo "pwd is $(pwd)"
+        displayName: 'show current working directory''
+
+      - task: CmdLine@2
+        inputs:
+          script: |
             npx playwright install &&
             npx playwright test --grep @accessibility --project=chromium
         env:

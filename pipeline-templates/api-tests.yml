@@ -19,13 +19,6 @@ jobs:
       - task: CmdLine@2
         inputs:
           script: |
-            chmod -R 755 $(System.DefaultWorkingDirectory)
-            chmod +x ./node_modules/.bin/playwright
-        displayName: 'Fix Permissions for directory'
-
-      - task: CmdLine@2
-        inputs:
-          script: |
             npx playwright install &&
             npx playwright test --grep @api --project=chromium
         displayName: 'Run API tests'

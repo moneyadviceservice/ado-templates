@@ -11,6 +11,10 @@ parameters:
     type: string
     default: ''
 
+  - name: dependsOnJob
+    type: string
+    default: ''
+
 jobs:
   - job: AccessibilityTests
     displayName: 'Run Accessibility Tests'

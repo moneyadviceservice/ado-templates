@@ -1,48 +1,45 @@
-  - stage: Accessibility
-    displayName: 'Accessibility Tests'
-    dependsOn: Setup
-    jobs:
-      - job: AccessibilityTests
-        displayName: 'Run Accessibility Tests'
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'workspace'
-              targetPath: '$(System.DefaultWorkingDirectory)/tests'
-            displayName: 'Download Workspace Artifact'
+jobs:
+  - job: AccessibilityTests
+    displayName: 'Run Accessibility Tests'
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'workspace'
+          targetPath: '$(System.DefaultWorkingDirectory)/tests'
+        displayName: 'Download Workspace Artifact'
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                chmod -R 755 $(System.DefaultWorkingDirectory)
-                chmod +x ./node_modules/.bin/playwright
-            displayName: 'Fix Permissions for directory'
+      - task: CmdLine@2
+        inputs:
+          script: |
+            chmod -R 755 $(System.DefaultWorkingDirectory)
+            chmod +x ./node_modules/.bin/playwright
+        displayName: 'Fix Permissions for directory'
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                npx playwright install &&
-                npx playwright test --grep @accessibility --project=chromium
-            env:
-              PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
-              PASSWORD: $(PASSWORD)
-              pension-dashboard-password: $(pension-dashboard-password)
-              MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
-              api-test-ticket: $(api-test-ticket)
-              REDIRECT_TEST_URL: 'https://my-company.com/dashboard/returned_find'
-            displayName: 'Run Accessibility tests'
-            continueOnError: true
+      - task: CmdLine@2
+        inputs:
+          script: |
+            npx playwright install &&
+            npx playwright test --grep @accessibility --project=chromium
+        env:
+          PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
+          PASSWORD: $(PASSWORD)
+          pension-dashboard-password: $(pension-dashboard-password)
+          MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
+          api-test-ticket: $(api-test-ticket)
+          REDIRECT_TEST_URL: 'https://my-company.com/dashboard/returned_find'
+        displayName: 'Run Accessibility tests'
+        continueOnError: true
 
-          - task: PublishHtmlReport@1
-            displayName: 'Accessibility Test HTML Results'
-            inputs:
-              htmlType: 'Axe-Core'
-              reportDir: 'test-results'
-              tabName: 'Accessibility Tests'
-            condition: always()
+      - task: PublishHtmlReport@1
+        displayName: 'Accessibility Test HTML Results'
+        inputs:
+          htmlType: 'Axe-Core'
+          reportDir: 'test-results'
+          tabName: 'Accessibility Tests'
+        condition: always()
 
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFiles: '**/**/result.xml'
-              testRunTitle: 'MHPD Accessibility Tests'
-            displayName: 'Publish Accessibility Test Results'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: '**/**/result.xml'
+          testRunTitle: 'MHPD Accessibility Tests'
+        displayName: 'Publish Accessibility Test Results'

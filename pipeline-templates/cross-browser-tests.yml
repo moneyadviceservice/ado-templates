@@ -1,3 +1,17 @@
+parameters:
+  - name: PENSION_DASHBOARD_URL
+    type: string
+    default: ''
+
+  - name: REDIRECT_TEST_URL
+    type: string
+    default: ''
+
+  - name: dependsOnJob
+    type: string
+    default: ''
+
+
 jobs:
   - job: CrossBrowserTests
     displayName: 'Run Cross Browser Tests'

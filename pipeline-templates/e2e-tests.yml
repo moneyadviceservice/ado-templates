@@ -1,3 +1,16 @@
+parameters:
+  - name: PENSION_DASHBOARD_URL
+    type: string
+    default: ''
+
+  - name: REDIRECT_TEST_URL
+    type: string
+    default: ''
+
+  - name: dependsOnJob
+    type: string
+    default: ''
+
 jobs:
   - job: E2ETests
     displayName: 'Run End-to-End Tests'

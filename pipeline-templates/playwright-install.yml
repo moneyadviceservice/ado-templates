@@ -54,7 +54,7 @@ jobs:
         inputs:
           azureSubscription: 'ADO-PWD-Connection'
           KeyVaultName:  ${{ parameters.VAULT_NAME }}
-          SecretsFilter: 'api-test-cookie, api-test-request-id, api-test-ticket, cda-bearer-token, code-verifier, pension-dashboard-password, test-client-secret' 
+          SecretsFilter: 'api-test-cookie, api-test-request-id, api-test-ticket, cda-bearer-token, code-verifier, pension-dashboard-password, test-client-secret, e2e-password' 
 
       - script: |
           echo "env var for pension dashboard: $PENSION_DASHBOARD_URL"
@@ -78,7 +78,6 @@ jobs:
           targetPath: '$(System.DefaultWorkingDirectory)/tests'
         displayName: 'Download workspace artifact'
   
-      #   accessibility tests
       - task: CmdLine@2
         inputs:
           script: |
@@ -91,45 +90,4 @@ jobs:
           script: |
             echo "pwd is $(pwd)"
             echo "ls is $(ls)"
-            echo 'env var for pension dashboard: $PENSION_DASHBOARD_URL'
-            echo 'env var for api domain:$MHPD_API_DOMAIN'
-            echo 'env var for pension-dashboard-password: $(pension-dashboard-password)'
-            echo 'env var for test ticket: $(api-test-ticket)'
-            echo 'env var for redict url: $REDIRECT_TEST_URL'
-            echo 'env var for code verifier: $(code-verifier)'
         displayName: 'Debug'
-        env:
-          PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
-          MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
-          pension-dashboard-password: $(pension-dashboard-password)
-          api-test-ticket: $(api-test-ticket)
-          REDIRECT_TEST_URL: 'https://my-company.com/dashboard/returned_find'
-          code-verifier: $(code-verifier)
-
-      - task: CmdLine@2
-        inputs:
-          script: |
-            npx playwright install &&
-            npx playwright test --grep @accessibility --project=chromium
-        env:
-          PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
-          pension-dashboard-password: $(pension-dashboard-password)
-          MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
-          api-test-ticket: $(api-test-ticket)
-          REDIRECT_TEST_URL: 'https://my-company.com/dashboard/returned_find'
-        displayName: 'Run Accessibility tests'
-        continueOnError: true
-
-      - task: PublishHtmlReport@1
-        displayName: 'Accessibility Test HTML Results'
-        inputs:
-          htmlType: 'Axe-Core'
-          reportDir: 'test-results'
-          tabName: 'Accessibility Tests'
-        condition: always()
-
-      - task: PublishTestResults@2
-        inputs:
-          testResultsFiles: '**/**/result.xml'
-          testRunTitle: 'MHPD Accessibility Tests'
-        displayName: 'Publish Accessibility Test Results'

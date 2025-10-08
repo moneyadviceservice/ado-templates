@@ -8,6 +8,7 @@
 jobs:
   - job: APITests
     displayName: 'Run API Tests'
+    dependsOn: ${{ parameters.dependsOnJob }}
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:

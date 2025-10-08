@@ -1,6 +1,7 @@
 jobs:
   - job: AccessibilityTests
     displayName: 'Run Accessibility Tests'
+    dependsOn: ${{ parameters.dependsOnJob }}
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:

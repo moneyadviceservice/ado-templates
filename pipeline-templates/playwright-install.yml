@@ -59,10 +59,10 @@ jobs:
       - script: |
           echo "env var for pension dashboard: $PENSION_DASHBOARD_URL"
           echo "env var for api domain:$MHPD_API_DOMAIN"
-          echo "env var for pension-dashboard-password: $pension-dashboard-password"
-          echo "env var for test ticket: $api-test-ticket"
+          echo "env var for pension-dashboard-password: $(pension-dashboard-password)"
+          echo "env var for test ticket: $(api-test-ticket)"
           echo "env var for redict url: $REDIRECT_TEST_URL"
-          echo "env var for code verifier: $code-verifier"
+          echo "env var for code verifier: $(code-verifier)"
         env:
           PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
           MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
@@ -91,11 +91,11 @@ jobs:
           script: |
             echo "pwd is $(pwd)"
             echo "ls is $(ls)"
-            echo 'env var for pension dashboard: $(PENSION_DASHBOARD_URL)'
-            echo 'env var for api domain:$(MHPD_API_DOMAIN)'
+            echo 'env var for pension dashboard: $PENSION_DASHBOARD_URL'
+            echo 'env var for api domain:$MHPD_API_DOMAIN'
             echo 'env var for pension-dashboard-password: $(pension-dashboard-password)'
             echo 'env var for test ticket: $(api-test-ticket)'
-            echo 'env var for redict url: $(REDIRECT_TEST_URL)'
+            echo 'env var for redict url: $REDIRECT_TEST_URL'
             echo 'env var for code verifier: $(code-verifier)'
         displayName: 'Debug'
 

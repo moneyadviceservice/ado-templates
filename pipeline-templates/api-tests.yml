@@ -1,16 +1,3 @@
-parameters:
-  - name: PENSION_DASHBOARD_URL
-    type: string
-    default: ''
-
-  - name: MHPD_API_DOMAIN
-    type: string
-    default: ''
-
-  - name: REDIRECT_TEST_URL
-    type: string
-    default: ''
-
 jobs:
   - job: APITests
     displayName: 'Run API Tests'

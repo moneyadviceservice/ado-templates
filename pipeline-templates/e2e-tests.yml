@@ -1,0 +1,42 @@
+jobs:
+  - job: E2ETests
+    displayName: 'Run End-to-End Tests'
+    dependsOn: ${{ parameters.dependsOnJob }}
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'workspace'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+        displayName: 'Download Workspace Artifact'
+
+      # - task: CmdLine@2
+      #   inputs:
+      #     script: |
+      #       chmod -R 755 $(System.DefaultWorkingDirectory)
+      #       chmod +x ./node_modules/.bin/playwright
+      #   displayName: 'Fix Permissions for directory'
+
+      - task: CmdLine@2
+        inputs:
+          script: |
+            npx playwright install &&
+            npx  playwright test --grep @e2e --project=chromium
+        displayName: 'Run E2E tests'
+        env:
+          PENSION_DASHBOARD_URL: ${{ parameters.REDIRECT_TEST_URL }}
+          pension-dashboard-password: $(pension-dashboard-password)
+        continueOnError: true
+
+      - task: PublishHtmlReport@1
+        displayName: 'E2E Test HTML Results'
+        inputs:
+          htmlType: 'Playwright-HTML'
+          reportDir: 'playwright-report'
+          tabName: 'E2E tests'
+        condition: always()
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: 'test-results/**/result.xml'
+          testRunTitle: 'MHPD End-to-End Tests'
+        displayName: 'Publish End-to-End Test Results'

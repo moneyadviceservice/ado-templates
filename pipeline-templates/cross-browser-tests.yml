@@ -1,0 +1,44 @@
+jobs:
+  - job: CrossBrowserTests
+    displayName: 'Run Cross Browser Tests'
+    dependsOn: ${{ parameters.dependsOnJob }}
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'workspace'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+        displayName: 'Download Workspace Artifact'
+
+      # - task: CmdLine@2
+      #   inputs:
+      #     script: |
+      #       chmod -R 755 $(System.DefaultWorkingDirectory)
+      #       chmod +x ./node_modules/.bin/playwright
+      #   displayName: 'Fix Permissions for directory'
+
+      - task: CmdLine@2
+        inputs:
+          script: |
+            npx playwright install &&
+            npx playwright test --grep @xbrowsers
+
+        displayName: 'Run Cross Browser tests'
+        env:
+          PENSION_DASHBOARD_URL: ${{ parameters.REDIRECT_TEST_URL }}
+          pension-dashboard-password: $(pension-dashboard-password)
+        continueOnError: true
+        condition: succeededOrFailed()
+
+      - task: PublishHtmlReport@1
+        displayName: 'Cross Browser Test HTML Results'
+        inputs:
+          htmlType: 'Playwright-HTML'
+          reportDir: 'playwright-report'
+          tabName: 'Cross Browser tests'
+        condition: always()
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: 'test-results/**/result.xml'
+          testRunTitle: 'MHPD Cross Browser Tests'
+        displayName: 'Publish Cross Browser Test Results'

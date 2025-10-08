@@ -5,46 +5,46 @@
   # - stage: API
   #   displayName: 'API Tests'
   #   dependsOn: Setup
-    jobs:
-      - job: APITests
-        displayName: 'Run API Tests'
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'workspace'
-              targetPath: '$(System.DefaultWorkingDirectory)'
-            displayName: 'Download Workspace Artifact'
+jobs:
+  - job: APITests
+    displayName: 'Run API Tests'
+    steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'workspace'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+        displayName: 'Download Workspace Artifact'
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                chmod -R 755 $(System.DefaultWorkingDirectory)
-                chmod +x ./node_modules/.bin/playwright
-            displayName: 'Fix Permissions for directory'
+      - task: CmdLine@2
+        inputs:
+          script: |
+            chmod -R 755 $(System.DefaultWorkingDirectory)
+            chmod +x ./node_modules/.bin/playwright
+        displayName: 'Fix Permissions for directory'
 
-          - task: CmdLine@2
-            inputs:
-              script: |
-                npx playwright install &&
-                npx playwright test --grep @api --project=chromium
-            displayName: 'Run API tests'
-            env:
-              MHPD_API_DOMAIN: $(MHPD_API_DOMAIN)
-              api-test-ticket: $(api-test-ticket)
-              REDIRECT_TEST_URL: $(REDIRECT_TEST_URL)
-              code-verifier: $(variables.code-verifier)
-            continueOnError: true
+      - task: CmdLine@2
+        inputs:
+          script: |
+            npx playwright install &&
+            npx playwright test --grep @api --project=chromium
+        displayName: 'Run API tests'
+        env:
+          MHPD_API_DOMAIN: $(MHPD_API_DOMAIN)
+          api-test-ticket: $(api-test-ticket)
+          REDIRECT_TEST_URL: $(REDIRECT_TEST_URL)
+          code-verifier: $(variables.code-verifier)
+        continueOnError: true
 
-          - task: PublishHtmlReport@1
-            displayName: 'API Test HTML Results'
-            inputs:
-              htmlType: 'Playwright-HTML'
-              reportDir: 'playwright-report'
-              tabName: 'API tests'
-            condition: always()
+      - task: PublishHtmlReport@1
+        displayName: 'API Test HTML Results'
+        inputs:
+          htmlType: 'Playwright-HTML'
+          reportDir: 'playwright-report'
+          tabName: 'API tests'
+        condition: always()
 
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFiles: 'test-results/**/result.xml'
-              testRunTitle: 'MHPD API Tests'
-            displayName: 'Publish API Test Results'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: 'test-results/**/result.xml'
+          testRunTitle: 'MHPD API Tests'
+        displayName: 'Publish API Test Results'

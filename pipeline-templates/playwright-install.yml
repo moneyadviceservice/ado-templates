@@ -17,6 +17,18 @@ parameters:
     type: string
     default: ''
 
+  - name: PENSION_DASHBOARD_URL
+    type: string
+    default: ''
+
+  - name: MHPD_API_DOMAIN
+    type: string
+    default: ''
+
+  - name: REDIRECT_TEST_URL
+    type: string
+    default: ''
+
 # pool:
 #   vmImage: $(vmImageName)
 
@@ -64,11 +76,11 @@ jobs:
           echo "env var for redict url: $REDIRECT_TEST_URL"
           echo "env var for code verifier: $(code-verifier)"
         env:
-          PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
-          MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
+          PENSION_DASHBOARD_URL: ${{ parameters.REDIRECT_TEST_URL }}
+          MHPD_API_DOMAIN: ${{ parameters.MHPD_API_DOMAIN }}
           pension-dashboard-password: $(pension-dashboard-password)
           api-test-ticket: $(api-test-ticket)
-          REDIRECT_TEST_URL: 'https://my-company.com/dashboard/returned_find'
+          REDIRECT_TEST_URL: ${{ parameters.REDIRECT_TEST_URL }}
           code-verifier: $(code-verifier)
         displayName: 'Retrieve Stored Variables and secrets'
 

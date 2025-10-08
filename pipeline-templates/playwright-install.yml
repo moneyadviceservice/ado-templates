@@ -29,6 +29,10 @@ parameters:
     type: string
     default: ''
 
+  - name: secrets_filter
+    type: string
+    default: ''
+
 # pool:
 #   vmImage: $(vmImageName)
 

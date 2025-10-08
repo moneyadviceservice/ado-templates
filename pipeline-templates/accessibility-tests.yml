@@ -15,10 +15,6 @@ parameters:
     type: string
     default: ''
 
-  - name: secrets_filter
-    type: string
-    default: ''
-
 jobs:
   - job: AccessibilityTests
     displayName: 'Run Accessibility Tests'

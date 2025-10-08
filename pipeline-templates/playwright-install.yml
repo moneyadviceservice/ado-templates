@@ -57,12 +57,12 @@ jobs:
           SecretsFilter: 'api-test-cookie, api-test-request-id, api-test-ticket, cda-bearer-token, code-verifier, pension-dashboard-password, test-client-secret' 
 
       - script: |
-          echo 'env var for pension dashboard: $(PENSION_DASHBOARD_URL)'
-          echo 'env var for api domain:$(MHPD_API_DOMAIN)'
-          echo 'env var for pension-dashboard-password: $(pension-dashboard-password)'
-          echo 'env var for test ticket: $(api-test-ticket)'
-          echo 'env var for redict url: $(REDIRECT_TEST_URL)'
-          echo 'env var for code verifier: $(code-verifier)'
+          echo "env var for pension dashboard: $PENSION_DASHBOARD_URL"
+          echo "env var for api domain:$MHPD_API_DOMAIN"
+          echo "env var for pension-dashboard-password: $pension-dashboard-password"
+          echo "env var for test ticket: $api-test-ticket"
+          echo "env var for redict url: $REDIRECT_TEST_URL"
+          echo "env var for code verifier: $code-verifier"
         env:
           PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
           MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'

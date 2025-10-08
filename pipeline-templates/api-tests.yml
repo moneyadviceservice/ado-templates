@@ -1,10 +1,16 @@
+parameters:
+  - name: PENSION_DASHBOARD_URL
+    type: string
+    default: ''
 
-  # -------------------------------
-  # API Tests Stage
-  # -------------------------------
-  # - stage: API
-  #   displayName: 'API Tests'
-  #   dependsOn: Setup
+  - name: MHPD_API_DOMAIN
+    type: string
+    default: ''
+
+  - name: REDIRECT_TEST_URL
+    type: string
+    default: ''
+
 jobs:
   - job: APITests
     displayName: 'Run API Tests'
@@ -23,9 +29,9 @@ jobs:
             npx playwright test --grep @api --project=chromium
         displayName: 'Run API tests'
         env:
-          MHPD_API_DOMAIN: $(MHPD_API_DOMAIN)
+          MHPD_API_DOMAIN: ${{ parameters.MHPD_API_DOMAIN }}
           api-test-ticket: $(api-test-ticket)
-          REDIRECT_TEST_URL: $(REDIRECT_TEST_URL)
+          REDIRECT_TEST_URL: ${{ parameters.REDIRECT_TEST_URL }}
           code-verifier: $(variables.code-verifier)
         continueOnError: true
 

@@ -1,3 +1,16 @@
+parameters:
+  - name: PENSION_DASHBOARD_URL
+    type: string
+    default: ''
+
+  - name: MHPD_API_DOMAIN
+    type: string
+    default: ''
+
+  - name: REDIRECT_TEST_URL
+    type: string
+    default: ''
+
 jobs:
   - job: AccessibilityTests
     displayName: 'Run Accessibility Tests'
@@ -9,12 +22,12 @@ jobs:
           targetPath: '$(System.DefaultWorkingDirectory)/tests'
         displayName: 'Download Workspace Artifact'
 
-      # - task: CmdLine@2
-      #   inputs:
-      #     script: |
-      #       chmod -R 755 $(System.DefaultWorkingDirectory)
-      #       chmod +x ./node_modules/.bin/playwright
-      #   displayName: 'Fix Permissions for directory'
+      - task: CmdLine@2
+        inputs:
+          script: |
+            chmod -R 755 $(System.DefaultWorkingDirectory)
+            chmod +x ./node_modules/.bin/playwright
+        displayName: 'Fix Permissions for directory'
 
       - task: CmdLine@2
         inputs:
@@ -22,12 +35,12 @@ jobs:
             npx playwright install &&
             npx playwright test --grep @accessibility --project=chromium
         env:
-          PENSION_DASHBOARD_URL: 'https://test--pensions-dashboard.netlify.app/en'
+          PENSION_DASHBOARD_URL: ${{ parameters.REDIRECT_TEST_URL }}
           PASSWORD: $(PASSWORD)
           pension-dashboard-password: $(pension-dashboard-password)
-          MHPD_API_DOMAIN: 'https://maps-api-management-test.azure-api.net'
+          MHPD_API_DOMAIN: ${{ parameters.MHPD_API_DOMAIN }}
           api-test-ticket: $(api-test-ticket)
-          REDIRECT_TEST_URL: 'https://my-company.com/dashboard/returned_find'
+          REDIRECT_TEST_URL: ${{ parameters.REDIRECT_TEST_URL }}
         displayName: 'Run Accessibility tests'
         continueOnError: true
 

@@ -26,15 +26,6 @@ jobs:
           targetPath: '$(System.DefaultWorkingDirectory)/tests'
         displayName: 'Download Workspace Artifact'
 
-      - task: Npm@1
-        inputs:
-          command: 'ci'
-          workingDir: '$(System.DefaultWorkingDirectory)'
-        displayName: 'Install npm dependencies'
-
-      - script: |
-          npx playwright install --with-deps
-        displayName: 'Install Playwright browsers'
 
       # - task: DownloadPipelineArtifact@2
       #   inputs:
@@ -69,7 +60,7 @@ jobs:
       - task: CmdLine@2
         inputs:
           script: |
-            npx playwright install --with-deps &&
+            npx playwright install &&
             npx playwright test --grep @accessibility --project=chromium
         env:
           PENSION_DASHBOARD_URL: ${{ parameters.REDIRECT_TEST_URL }}

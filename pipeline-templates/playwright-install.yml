@@ -107,3 +107,7 @@ jobs:
             echo "pwd is $(pwd)"
             echo "ls is $(ls -la)"
         displayName: 'Debug'
+
+      - publish: $(System.DefaultWorkingDirectory)/node_modules
+        artifact: node_modules
+        displayName: 'Publish node_modules artifact'

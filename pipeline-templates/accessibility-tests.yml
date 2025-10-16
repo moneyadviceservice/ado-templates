@@ -15,6 +15,11 @@ parameters:
     type: string
     default: ''
 
+  - name: node_version
+    displayName: Node.js version
+    type: string
+    default: '20.x'
+
 jobs:
   - job: AccessibilityTests
     displayName: 'Run Accessibility Tests'

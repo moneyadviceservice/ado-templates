@@ -25,11 +25,11 @@ jobs:
     displayName: 'Run Accessibility Tests'
     dependsOn: ${{ parameters.dependsOnJob }}
     steps:
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          artifact: 'workspace'
-          targetPath: '$(System.DefaultWorkingDirectory)/tests'
-        displayName: 'Download Workspace Artifact'
+      # - task: DownloadPipelineArtifact@2
+      #   inputs:
+      #     artifact: 'workspace'
+      #     targetPath: '$(System.DefaultWorkingDirectory)/tests'
+      #   displayName: 'Download Workspace Artifact'
 
       - task: NodeTool@0
         inputs:

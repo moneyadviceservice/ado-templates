@@ -26,6 +26,14 @@ jobs:
           targetPath: '$(System.DefaultWorkingDirectory)/tests'
         displayName: 'Download Workspace Artifact'
 
+      - task: CmdLine@2
+        inputs:
+          script: |
+            echo "pwd is $(pwd)"
+            echo "ls is $(ls -la)"
+            echo "ls node_modules is $(ls -la ./node_modules)"
+        displayName: 'Debug'
+
       # - task: CmdLine@2
       #   inputs:
       #     script: |

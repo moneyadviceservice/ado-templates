@@ -31,7 +31,7 @@ jobs:
           script: |
             echo "pwd is $(pwd)"
             echo "ls is $(ls -la)"
-            echo "ls node_modules is $(ls -la ./node_modules)"
+            echo "ls /./ is $(ls -la /./)"
         displayName: 'Debug'
 
       # - task: CmdLine@2

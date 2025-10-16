@@ -62,6 +62,20 @@ jobs:
           workingDir: '$(System.DefaultWorkingDirectory)'
         displayName: 'Install npm dependencies'
 
+      - task: Cache@2
+        inputs:
+          key: 'npm | "$(Agent.OS)" | package-lock.json'
+          path: '$(System.DefaultWorkingDirectory)/node_modules'
+          restoreKeys: |
+            npm | "$(Agent.OS)"
+        displayName: 'Cache node_modules'
+
+      - task: Cache@2
+        inputs:
+          key: 'playwright | "$(Agent.OS)"'
+          path: '~/.cache/ms-playwright'
+        displayName: 'Cache Playwright browsers'
+
       - script: |
           npx playwright install --with-deps
         displayName: 'Install Playwright browsers'

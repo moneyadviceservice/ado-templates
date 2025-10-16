@@ -30,6 +30,11 @@ jobs:
         artifact: node_modules
         displayName: 'Download node_modules artifact'
 
+      - script: |
+          echo "Moving node_modules to working directory"
+          mv $(Pipeline.Workspace)/node_modules ./node_modules
+        displayName: 'Fix node_modules path'
+
       - task: CmdLine@2
         inputs:
           script: |

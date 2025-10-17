@@ -34,12 +34,12 @@ jobs:
       - download: current
         artifact: node_modules
         displayName: 'Download node_modules artifact'
-        path: $(System.DefaultWorkingDirectory)
+        # path: $(System.DefaultWorkingDirectory)
 
-      # - script: |
-      #     echo "Moving node_modules to working directory"
-      #     mv $(Pipeline.Workspace)/node_modules ./node_modules
-      #   displayName: 'Chanfenode_modules path'
+      - script: |
+          echo "Moving node_modules to working directory"
+          mv $(Pipeline.Workspace)/node_modules ./node_modules
+        displayName: 'Chanfenode_modules path'
 
       - task: CmdLine@2
         inputs:

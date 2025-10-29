@@ -23,6 +23,8 @@ pwd
 ls
 dotnet build
 
+func --version
+
 func start --dotnet-isolated --no-timeout &  
 sleep 10
 

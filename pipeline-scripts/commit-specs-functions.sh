@@ -19,11 +19,13 @@ export FUNCTIONS_INPROC_NET8_ENABLED="true"
 cd "$SERVICE_PATH/app/$SERVICE_NAME"
 
 npm i -g azure-functions-core-tools@4 --unsafe-perm true
+
+func --version
+
 pwd
 ls
 dotnet build
 
-func --version
 
 func start --dotnet-isolated --no-timeout &  
 sleep 10

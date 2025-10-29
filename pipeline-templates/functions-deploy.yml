@@ -58,7 +58,7 @@ jobs:
           azureSubscription: $(subscription)
           appType: functionApp
           appName: $(functionAppName)
-          package: '$(Pipeline.Workspace)/drop/${{ parameters.serviceName }}.zip'
+          package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
 
       - task: AzureWebApp@1
         displayName: 'Deploy to Staging Slot'

@@ -20,12 +20,11 @@ cd "$SERVICE_PATH/app/$SERVICE_NAME"
 
 npm i -g azure-functions-core-tools@4 --unsafe-perm true
 
-func --version
+echo "func version is: $(func --version)"
 
 pwd
 ls
 dotnet build
-
 
 func start --dotnet-isolated --no-timeout &  
 sleep 10

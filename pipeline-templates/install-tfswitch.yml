@@ -25,4 +25,9 @@ steps:
         # Prepend PATH for current ADO task
         export PATH=$HOME/.local/bin:$PATH
         tfswitch ${{ parameters.tfswitchArgs }}
+
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        az version
+        which az
+
       workingDirectory: ${{ parameters.workingDirectory}}

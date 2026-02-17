@@ -104,7 +104,7 @@ steps:
         -out tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}
         -var env=${{ parameters.environment }}
         -var product=${{ parameters.product }} ${{ parameters.planCommandOptions }}
-        -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}/${{ parameters.environment }}.tfvars"
+        -var-file "$(System.DefaultWorkingDirectory)/environments/${{ parameters.environment }}"
         -lock=false
   
   - task: TerraformCLI@1

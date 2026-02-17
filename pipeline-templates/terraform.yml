@@ -101,11 +101,12 @@ steps:
       runAzLogin: true
       publishPlanResults: "${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
       commandOptions: >
-        -out tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}
-        -var env=${{ parameters.environment }}
-        -var product=${{ parameters.product }} ${{ parameters.planCommandOptions }}
-        -var location=${{ parameters.location }}
+        -out=tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}
+        -var="env=${{ parameters.environment }}"
+        -var="product=${{ parameters.product }}"
+        -var="location=${{ parameters.location }}"
         -lock=false
+        ${{ parameters.planCommandOptions }}
   
   - task: TerraformCLI@1
     displayName: Terraform apply ${{ parameters.component }}

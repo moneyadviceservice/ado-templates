@@ -100,7 +100,7 @@ steps:
       environmentServiceName: ${{ parameters.serviceConnection }}
       runAzLogin: true
       publishPlanResults: "${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}"
-      commandOptions: |
+      commandOptions: >
         -out=tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}
         -var="env=${{ parameters.environment }}"
         -var="product=${{ parameters.product }}"

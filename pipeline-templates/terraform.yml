@@ -103,7 +103,7 @@ steps:
       commandOptions: >
         -out tfplan-${{ parameters.environment }}-${{ lower(replace(parameters.location, ' ', '')) }}-${{ parameters.component }}
         -var env=${{ parameters.environment }}
-        -var location=${{ parameters.location }}
+        -var location=${{ parameters.location }} ${{ parameters.planCommandOptions }}
         -lock=false
   
   - task: TerraformCLI@1

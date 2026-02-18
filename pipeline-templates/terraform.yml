@@ -12,9 +12,10 @@ parameters:
     default: dev
 
   - name: location
+    default: uksouth  
     values:
-      - 'uksouth'
-      - 'ukwest'
+      - uksouth
+      - ukwest
 
   - name: overrideAction
     default: plan

@@ -12,7 +12,6 @@ parameters:
     default: dev
 
   - name: location
-    default: 'uksouth'
     values:
       - 'uksouth'
       - 'ukwest'

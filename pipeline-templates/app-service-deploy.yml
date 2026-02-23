@@ -47,7 +47,7 @@ jobs:
           appName: '$(appServiceName)'
           resourceGroupName: '$(resourceGroupName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
-          runtimeStack: 'DOTNETCORE|8.0'
+          runtimeStack: 'DOTNETCORE|10.0'
 
       - task: AzureWebApp@1
         displayName: 'Deploy to Staging Slot'
@@ -60,7 +60,7 @@ jobs:
           resourceGroupName: '$(resourceGroupName)'
           slotName: '$(slotName)'
           package: '$(Pipeline.Workspace)/drop/${{ parameters.packagePath }}.zip'
-          runtimeStack: 'DOTNETCORE|8.0'
+          runtimeStack: 'DOTNETCORE|10.0'
 
       - task: AzureAppServiceManage@0
         displayName: 'Swap to Production slot'

@@ -14,7 +14,7 @@ TARGET_DIR="$SERVICE_PATH/app/$SERVICE_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 
 export AzureWebJobsStorage="UseDevelopmentStorage=true"
 export FUNCTIONS_WORKER_RUNTIME="dotnet-isolated"
-export FUNCTIONS_INPROC_NET8_ENABLED="true"
+export USE_FUNCTIONSAPPLICATION_BUILDER=true
 
 cd "$SERVICE_PATH/app/$SERVICE_NAME"
 

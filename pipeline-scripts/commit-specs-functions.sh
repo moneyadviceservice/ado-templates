@@ -30,7 +30,7 @@ func start --dotnet-isolated --no-timeout &
 sleep 10
 
 # Wait until the function is actually running
-until curl --output $TARGET_DIR http://localhost:7071/swagger.json; do  
+until curl --output $TARGET_DIR http://localhost:7071/swagger/v1/swagger.json; do  
     echo "Waiting for function to start..."  
     sleep 2  
 done

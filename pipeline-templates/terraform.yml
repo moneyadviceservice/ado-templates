@@ -47,7 +47,7 @@ parameters:
 steps:
   - checkout: self
     clean: true
-  - bash: echo ${{ parameters.environment }}
+  - bash: echo ${{ parameters.environment }} ${{ parameters.location }} 
     displayName: 'Environment parameter: ${{ parameters.environment }}'
 
   - template: ./install-tfswitch.yml
@@ -69,7 +69,7 @@ steps:
       backendType: azurerm
       ensureBackend: false
       backendServiceArm: ${{ parameters.serviceConnection }}
-      backendAzureRmResourceGroupName: 'maps-state-${{ parameters.environment }}'
+      backendAzureRmResourceGroupName: 'mhpd-state-${{ parameters.environment }}'
       backendAzureRmResourceGroupLocation: ${{ parameters.location }}
       backendAzureRmStorageAccountName: ${{ parameters.storage_account_name }}
       backendAzureRmStorageAccountSku: Standard_LRS

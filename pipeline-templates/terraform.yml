@@ -52,7 +52,7 @@ steps:
 
   - template: ./install-tfswitch.yml
     parameters:
-      tfswitchArgs: -b ~/.local/bin/terraform --latest
+      tfswitchArgs: -b ~/.local/bin/terraform 1.14.9
       ${{ if eq( parameters['baseDirectory'], '') }}:
         workingDirectory: '$(System.DefaultWorkingDirectory)/components/${{ parameters.component }}'
       ${{ else }}:

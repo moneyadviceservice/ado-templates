@@ -14,7 +14,7 @@ TARGET_DIR="$SERVICE_PATH/app/$SERVICE_NAME/wwwroot/swagger/v1/$SPEC_FILE_NAME"
 
 export AzureWebJobsStorage="UseDevelopmentStorage=true"
 export FUNCTIONS_WORKER_RUNTIME="dotnet-isolated"
-export FUNCTIONS_INPROC_NET8_ENABLED="true"
+export USE_FUNCTIONSAPPLICATION_BUILDER="true"
 
 cd "$SERVICE_PATH/app/$SERVICE_NAME"
 
@@ -30,7 +30,7 @@ func start --dotnet-isolated --no-timeout &
 sleep 10
 
 # Wait until the function is actually running
-until curl --output $TARGET_DIR http://localhost:7071/swagger.json; do  
+until curl --output $TARGET_DIR http://localhost:7071/swagger/v1/swagger.json; do  
     echo "Waiting for function to start..."  
     sleep 2  
 done

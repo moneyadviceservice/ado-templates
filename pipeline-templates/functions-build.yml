@@ -83,6 +83,8 @@ jobs:
       - checkout: ado-templates
         path: ado-templates
 
+      - task: FuncToolsInstaller@0
+
       - script: |
           chmod +x $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs-functions.sh
           $(Build.SourcesDirectory)/../ado-templates/pipeline-scripts/commit-specs-functions.sh

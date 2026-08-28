@@ -18,8 +18,6 @@ export USE_FUNCTIONSAPPLICATION_BUILDER="true"
 
 cd "$SERVICE_PATH/app/$SERVICE_NAME"
 
-npm i -g azure-functions-core-tools@4 --unsafe-perm true
-
 echo "func version is: $(func --version)"
 
 pwd
